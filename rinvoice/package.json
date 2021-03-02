@@ -1,0 +1,52 @@
+{
+  "name": "rinvoice",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "anchor-js": "^4.3.0",
+    "animate.css": "^4.1.1",
+    "bootstrap": "^4.6.0",
+    "bootstrap-notify": "^3.1.3",
+    "chart.js": "^2.9.4",
+    "clipboard": "^2.0.6",
+    "cookie-parser": "~1.4.4",
+    "datatables.net": "^1.10.23",
+    "datatables.net-bs4": "^1.10.23",
+    "datatables.net-buttons": "^1.6.5",
+    "datatables.net-buttons-bs4": "^1.6.5",
+    "datatables.net-responsive-bs4": "^2.2.7",
+    "datatables.net-select": "^1.3.1",
+    "datatables.net-select-bs4": "^1.3.1",
+    "debug": "~2.6.9",
+    "dropzone": "^5.7.6",
+    "ejs": "^3.1.6",
+    "express": "~4.16.1",
+    "headroom.js": "^0.12.0",
+    "holderjs": "^2.9.9",
+    "http-errors": "~1.6.3",
+    "jade": "^0.29.0",
+    "jquery": "^3.5.1",
+    "jquery-scroll-lock": "^3.1.3",
+    "jquery.scrollbar": "^0.2.11",
+    "js-cookie": "^2.2.1",
+    "jvectormap-next": "^3.1.1",
+    "lavalamp": "^2.0.0",
+    "list.js": "^2.3.1",
+    "moment": "^2.29.1",
+    "morgan": "~1.9.1",
+    "nouislider": "^14.6.3",
+    "onscreen": "^1.4.0",
+    "prismjs": "^1.23.0",
+    "quill": "^1.3.7",
+    "select2": "^4.1.0-rc.0",
+    "sweetalert2": "^10.15.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

@@ -1,0 +1,15 @@
+<!-- ====== [ core scripts ] ====== -->
+<script src="/javascripts/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/javascripts/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/javascripts/vendor/js-cookie/js.cookie.js"></script>
+<script src="/javascripts/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/javascripts/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+<!-- ====== [ js ] ====== -->
+<script src="/javascripts/argon.js"></script>
+
+<!-- adds 'active' class to curr sidebar element -->
+<script>
+    $(function () {
+        $('.nav-link[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+    });
+</script>
