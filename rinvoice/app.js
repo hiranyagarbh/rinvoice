@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var http = require('http');
 
-// dev
+// ====== [ dev ] ======
 var logger = require('morgan');
 var chalk = require('chalk');
 const morganMiddleware = logger(function (tokens, req, res) {
@@ -26,7 +26,7 @@ var bodyParser = require("body-parser");
 
 var app = express();
 
-// ===== [ db conn ] =====
+// ====== [ db conn ] ======
 var conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -45,7 +45,7 @@ conn.connect((err) => {
 global.db = conn; //single global DB connection 
 
 
-// session
+// ====== [ session ] ======
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -54,7 +54,7 @@ app.use(session({
 }));
 
 
-// ========== ========== ========== ========== ========== ========== ========== view engine setup
+// ====== [ view engine setup ] ======
 app.set('views', path.join(__dirname, 'views'));
 // EJS - { https://ejs.co/#docs }
 app.set('view engine', 'ejs');
@@ -75,10 +75,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // s2: add render funct in /routes
 // s3: add to static files in /views/pages
 
-
-// homepage
-app.get('/', routes.index);
-
 // call for register page
 app.get('/register', user.register);
 app.post('/register', user.register);
@@ -93,12 +89,8 @@ app.get('/home/dashboard', user.dashboard);
 app.get('/home/invoices', user.invoices);
 // call for logout
 app.get('/home/logout', user.logout);
-
-
-
-// app.use('/home', require('./routes/home'));
-// app.use('/invoices', require('./routes/invoices'));
-// app.use('/profile', require('./routes/profile'));
+// call for profile
+app.get('/home/profile', user.profile)
 
 
 // ====== [ error handling ] ======

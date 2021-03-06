@@ -30,61 +30,74 @@
               <div class="text-center text-muted mb-4">
                 <small>Sign up with credentials</small>
               </div>
-              <form role="form" method="post" action="/signup">
-                <div class="form-group">
-                  <div class="input-group input-group-merge input-group-alternative mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-single-02"></i></span>
-                    </div>
-                    <input class="form-control" placeholder="Name" type="text" name="name">
-                  </div>
+              <% if (message.length> 0) { %>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  <span class="alert-text">
+                    <%= message %>
+                  </span>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-                <div class="form-group">
-                  <div class="input-group input-group-merge input-group-alternative mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-email-83"></i></span>
-                    </div>
-                    <input class="form-control" placeholder="Email" type="email" name="email">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group input-group-merge input-group-alternative">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
-                    </div>
-                    <input class="form-control" placeholder="Password" type="password" name="password">
-                  </div>
-                </div>
-                <!-- <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div> -->
-                <div class="row my-4">
-                  <div class="col-12">
-                    <div class="mb-3">
-                      <div class="custom-control custom-radio mb-2">
-                        <input type="radio" id="buyer_account" name="acctype" value="buyer_account" class="custom-control-input">
-                        <label class="custom-control-label text-muted" for="buyer_account">buyer account</label>
-                      </div>
-                      <div class="custom-control custom-radio">
-                        <input type="radio" id="merchant_account" name="acctype" value="merchant_account" class="custom-control-input">
-                        <label class="custom-control-label text-muted" for="merchant_account">merchant account</label>
+                <% } %>
+                  <form role="form" method="post" action="/register">
+                    <div class="form-group">
+                      <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                        </div>
+                        <input class="form-control" placeholder="Name" type="text" name="name">
                       </div>
                     </div>
-                    <div class="custom-control custom-control-alternative custom-checkbox">
-                      <input class="custom-control-input" id="customCheckRegister" type="checkbox">
-                      <label class="custom-control-label" for="customCheckRegister">
-                        <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
-                      </label>
+                    <div class="form-group">
+                      <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                        </div>
+                        <input class="form-control" placeholder="Email" type="email" name="email">
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-dark mt-4">Create account</button>
-                </div>
-              </form>
+                    <div class="form-group">
+                      <div class="input-group input-group-merge input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                        </div>
+                        <input class="form-control" placeholder="Password" type="password" name="password">
+                      </div>
+                    </div>
+                    <!-- <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div> -->
+                    <div class="row my-4">
+                      <div class="col-12">
+                        <div class="mb-3">
+                          <div class="custom-control custom-radio mb-2">
+                            <input type="radio" id="buyer_account" name="acctype" value="buyer_account"
+                              class="custom-control-input">
+                            <label class="custom-control-label text-muted" for="buyer_account">buyer account</label>
+                          </div>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" id="merchant_account" name="acctype" value="merchant_account"
+                              class="custom-control-input">
+                            <label class="custom-control-label text-muted" for="merchant_account">merchant
+                              account</label>
+                          </div>
+                        </div>
+                        <div class="custom-control custom-control-alternative custom-checkbox">
+                          <input class="custom-control-input" id="customCheckRegister" type="checkbox">
+                          <label class="custom-control-label" for="customCheckRegister">
+                            <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-dark mt-4">Create account</button>
+                    </div>
+                  </form>
             </div>
           </div>
           <div class="row mt-3">
             <div class="col-6 text-left">
-              <a href="/" class="text-light"><small>Already have an account?</small></a>
+              <a href="/login" class="text-light"><small>Already have an account?</small></a>
             </div>
           </div>
         </div>
