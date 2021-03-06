@@ -1,9 +1,21 @@
 var createError = require('http-errors');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 var express = require('express');
 var path = require('path');
 var http = require('http');
+
+// dev
+var logger = require('morgan');
+var chalk = require('chalk');
+const morganMiddleware = logger(function (tokens, req, res) {
+  return [
+    // chalk.hex('#ff4757').bold('🍄  Morgan --> '),
+    chalk.hex('#f78fb3')(tokens.method(req, res)),
+    chalk.cyan(tokens.status(req, res)),
+    chalk.hex('#A4A7AA')(tokens.url(req, res)),
+    chalk.hex('#fffa65')(tokens['response-time'](req, res) + ' ms')
+  ].join(' ');
+});
 
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -47,12 +59,7 @@ app.set('views', path.join(__dirname, 'views'));
 // EJS - { https://ejs.co/#docs }
 app.set('view engine', 'ejs');
 // morgan - { https://www.npmjs.com/package/morgan }
-app.use(logger(function (tokens, req, res) {
-  return [
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.res(req, res, 'content-length')].join(' ')}));
+app.use(morganMiddleware);
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -98,7 +105,7 @@ app.get('/home/logout', user.logout);
 // add 404 & 500 page?
 
 app.use(function (req, res, next) {
-  res.status(404).send('Not Found!');
+  res.status(404).send('404: Page Not Found!');
 });
 
 
