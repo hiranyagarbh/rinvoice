@@ -1,22 +1,18 @@
 var createError = require('http-errors');
-// var express = require('express');
-// var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var bodyParser = require("body-parser");
+var express = require('express');
+var path = require('path');
+var http = require('http');
 
-
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
-
-var app = express();
+var routes = require('./routes');
+var user = require('./routes/user');
 
 var mysql = require('mysql');
 var session = require('express-session');
 var bodyParser = require("body-parser");
+
+var app = express();
 
 // ===== [ db conn ] =====
 var conn = mysql.createConnection({
@@ -51,7 +47,12 @@ app.set('views', path.join(__dirname, 'views'));
 // EJS - { https://ejs.co/#docs }
 app.set('view engine', 'ejs');
 // morgan - { https://www.npmjs.com/package/morgan }
-app.use(logger('dev'));
+app.use(logger(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length')].join(' ')}));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -81,6 +82,8 @@ app.post('/login', user.login);
 
 // call for home page after login
 app.get('/home/dashboard', user.dashboard);
+// call for invoices page after login
+app.get('/home/invoices', user.invoices);
 // call for logout
 app.get('/home/logout', user.logout);
 
@@ -94,13 +97,13 @@ app.get('/home/logout', user.logout);
 // ====== [ error handling ] ======
 // add 404 & 500 page?
 
-app.use(function(req, res, next) {
-    res.status(404).send('Not Found!');
+app.use(function (req, res, next) {
+  res.status(404).send('Not Found!');
 });
 
 
 // middleware
-var listener = app.listen(8080, function(){
+var listener = app.listen(8080, function () {
   console.log('\x1b[36m%s\x1b[0m', 'Listening on port ' + listener.address().port);
 });
 
