@@ -2,23 +2,23 @@
 <html>
 
 <head>
-  <%- include('../partials/html_head', {title: 'Profile' }); %>
+  <%- include('../../partials/html_head', {title: 'Profile' }); %>
 </head>
 
 <body>
   <!-- [ sidenav ] -->
-  <%- include('../partials/sidenav'); %>
+  <%- include('../../partials/sidenav'); %>
 
   <!-- Main content -->
   <div class="main-content" id="panel">
     <!-- [ topnav ] -->
-    <%- include('../partials/topnav'); %>
+    <%- include('../../partials/topnav'); %>
 
     <!-- [ header ] -->
     <div class="header pb-6">
       <div class="container-fluid">
         <div class="header-body">
-          <%- include('../partials/header', {settings:'<li class="breadcrumb-item"><a href="#">Settings</a></li>', page: 'Profile' }); %>
+          <%- include('../../partials/header', {settings:'<li class="breadcrumb-item"><a href="#">Settings</a></li>', page: 'Profile' }); %>
         </div>
       </div>
     </div>
@@ -40,30 +40,18 @@
                 <h6 class="heading-small text-muted mb-4">User information</h6>
                 <div class="pl-lg-4">
                   <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-username">Username</label>
-                        <input type="text" id="input-username" class="form-control" placeholder="Username" value="jesse" disabled>
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-email">Email address</label>
-                        <input type="email" id="input-email" class="form-control" placeholder="jesse@example.com" disabled>
+                        <input type="email" id="input-email" class="form-control" value="<%=data[0].email%>" disabled>
                       </div>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-first-name">First name</label>
-                        <input type="text" id="input-first-name" class="form-control" placeholder="First name">
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-last-name">Last name</label>
-                        <input type="text" id="input-last-name" class="form-control" placeholder="Last name">
+                        <label class="form-control-label" for="input-first-name">Name</label>
+                        <input type="text" id="input-first-name" class="form-control" value="<%=data[0].name%>">
                       </div>
                     </div>
                   </div>
@@ -101,15 +89,6 @@
                     </div>
                   </div>
                 </div>
-                <hr class="my-4" />
-                <!-- Description -->
-                <h6 class="heading-small text-muted mb-4">About me</h6>
-                <div class="pl-lg-4">
-                  <div class="form-group">
-                    <label class="form-control-label">About Me</label>
-                    <textarea rows="4" class="form-control" placeholder="A few words about you or your services."></textarea>
-                  </div>
-                </div>
                 <div class="col-md-2 mx-auto">
                   <a href="#!" class="btn btn-dark">save profile</a>
                 </div>
@@ -119,11 +98,11 @@
         </div>
       </div>
       <!-- [ footer ] -->
-      <%- include('../partials/footer'); %>
+      <%- include('../../partials/footer'); %>
     </div>
   </div>
   <!-- [ scripts ] -->
-  <%- include('../partials/scripts'); %>
+  <%- include('../../partials/scripts'); %>
 </body>
 
 </html>
