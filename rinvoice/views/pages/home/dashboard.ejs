@@ -2,24 +2,24 @@
 <html>
 
 <head>
-  <%- include('../partials/html_head', {title: 'Home' }); %>
+  <%- include('../../partials/html_head', {title: 'Home' }); %>
 </head>
 
 <body>
   <!-- [ sidenav ] -->
-  <%- include('../partials/sidenav'); %>
+  <%- include('../../partials/sidenav'); %>
 
   <!-- [ main content ] -->
   <div class="main-content" id="panel">
 
     <!-- [ topnav ] -->
-    <%- include('../partials/topnav'); %>
+    <%- include('../../partials/topnav'); %>
 
     <!-- [ header ] -->
     <div class="header pb-6">
       <div class="container-fluid">
           <div class="header-body">
-            <%- include('../partials/header', {settings: '', page: 'Dashboard' }); %>
+            <%- include('../../partials/header', {settings: '', page: 'Dashboard' }); %>
             <!-- [ card stats ] -->
           <div class="row">
             <div class="col-xl-3 col-md-6">
@@ -85,11 +85,11 @@
         </div>
       </div>
       <!-- [ footer ] -->
-      <%- include('../partials/footer'); %>
+      <%- include('../../partials/footer'); %>
     </div>
   </div>
   <!-- [ core scripts ] -->
-  <%- include('../partials/scripts'); %>
+  <%- include('../../partials/scripts'); %>
 
     <!-- [ optional JS ] -->
     <script src="/javascripts/vendor/chart.js/dist/Chart.min.js"></script>

@@ -79,8 +79,11 @@ app.post('/register', user.register);
 app.get('/login', user.login);
 app.post('/login', user.login);
 
-// call for home page
-// app.get('/home/dashboard', user.home)
+// call for home page after login
+app.get('/home/dashboard', user.dashboard);
+// call for logout
+app.get('/home/logout', user.logout);
+
 
 
 // app.use('/home', require('./routes/home'));
@@ -95,6 +98,8 @@ app.use(function(req, res, next) {
     res.status(404).send('Not Found!');
 });
 
+
+// middleware
 var listener = app.listen(8080, function(){
   console.log('\x1b[36m%s\x1b[0m', 'Listening on port ' + listener.address().port);
 });
