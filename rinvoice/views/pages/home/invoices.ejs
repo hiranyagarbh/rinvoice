@@ -2,23 +2,23 @@
 <html>
 
 <head>
-  <%- include('../partials/html_head', {title: 'Invoices' }); %>
+  <%- include('../../partials/html_head', {title: 'Invoices' }); %>
 </head>
 
 <body>
   <!-- [ sidenav ] -->
-  <%- include('../partials/sidenav'); %>
+  <%- include('../../partials/sidenav'); %>
 
   <!-- [ main content ] -->
   <div class="main-content" id="panel">
     <!-- [ topnav ] -->
-    <%- include('../partials/topnav'); %>
+    <%- include('../../partials/topnav'); %>
 
     <!-- [ header ] -->
     <div class="header pb-6">
       <div class="container-fluid">
           <div class="header-body">
-            <%- include('../partials/header', {settings:'', page: 'Invoices' }); %>
+            <%- include('../../partials/header', {settings:'', page: 'Invoices' }); %>
           </div>
       </div>
     </div>
@@ -145,11 +145,11 @@
         </div>
       </div>
       <!-- [ footer ] -->
-      <%- include('../partials/footer'); %>
+      <%- include('../../partials/footer'); %>
     </div>
   </div>
   <!-- [ scripts ] -->
-  <%- include('../partials/scripts'); %>
+  <%- include('../../partials/scripts'); %>
 </body>
 
 </html>
