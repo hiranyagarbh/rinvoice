@@ -9,165 +9,175 @@
   <!-- [ sidenav ] -->
   <%- include('../../partials/sidenav'); %>
 
-  <!-- [ main content ] -->
-  <div class="main-content" id="panel">
-    <!-- [ topnav ] -->
-    <%- include('../../partials/topnav'); %>
+    <!-- [ main content ] -->
+    <div class="main-content" id="panel">
+      <!-- [ topnav ] -->
+      <%- include('../../partials/topnav'); %>
 
-    <!-- [ header ] -->
-    <div class="header pb-6">
-      <div class="container-fluid">
-          <div class="header-body">
-            <%- include('../../partials/header', {settings:'', page: 'Invoices' }); %>
-          </div>
-      </div>
-    </div>
-
-    <!-- [ page content ] -->
-    <div class="container-fluid mt--6">
-      <div class="row">
-        <div class="col">
-          <div class="card bg-light shadow">
-            <div class="card-header bg-light border-0">
-              <h3 class="text-dark mb-0">Invoice History
-                <% switch (data[0].acctype) {
-                  case 'b' : %>
-                          <span class="badge badge-pill badge-primary float-right">Account Type: Buyer</span>
-                          <% break;
-                  case 'm' : %>
-                          <span class="badge badge-pill badge-primary float-right">Account Type: Merchant</span>
-                          <% break;
-                  } %>
-              </h3>
-            </div>
-            <div class="table-responsive">
-              <table class="table align-items-center table-light table-flush">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col" class="sort" data-sort="name">Name</th>
-                    <th scope="col" class="sort" data-sort="budget">Amount</th>
-                    <th scope="col" class="sort" data-sort="status">Status</th>
-                    <th scope="col">Seller</th>
-                    <th scope="col" class="sort" data-sort="completion">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="list">
-                  <tr>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">Transport Service</span>
-                          <span class="badge badge-pill badge-danger">URGENT</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td class="budget">INR 50,000</td>
-                    <td>
-                      <span class="badge badge-dot mr-4">
-                        <i class="bg-warning"></i>
-                        <span class="status">pending</span>
-                      </span>
-                    </td>
-                    <td>
-                      <div class="avatar-group">
-                        <p class="name mb-0 text-sm">Abc Services Ltd.</p>
-                      </div>
-                    </td>
-                    <td>
-                      <button class="btn btn-icon btn-outline-info" type="button">
-                        <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
-                          <span class="btn-inner--text">View</span>
-                      </button>
-                      <% if (data[0].acctype == 'b') { %>
-                      <button class="btn btn-icon btn-outline-danger" type="button">
-                        <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
-                          <span class="btn-inner--text">Delete</span>
-                      </button>
-                      <% } %>
-
-                      <% if (data[0].acctype == 'm') { %>
-                      <button class="btn btn-icon btn-outline-success" type="button">
-                        <span class="btn-inner--icon"><i class="ni ni-check-bold"></i></span>
-                          <span class="btn-inner--text">Approve</span>
-                      </button>
-                      <button class="btn btn-icon btn-outline-danger" type="button">
-                        <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
-                          <span class="btn-inner--text">Reject</span>
-                      </button>
-                      <% } %>
-                      
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">Internet Service</span>
-                          <span class="badge badge-pill badge-default">NORMAL</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td class="budget">INR 32,500</td>
-                    <td>
-                      <span class="badge badge-dot mr-4">
-                        <i class="bg-success"></i>
-                        <span class="status">approved</span>
-                      </span>
-                    </td>
-                    <td>
-                      <div class="avatar-group">
-                        <p class="name mb-0 text-sm">Xyz Services Ltd.</p>
-                      </div>
-                    </td>
-                    <td>
-                      <button class="btn btn-icon btn-outline-info" type="button">
-                        <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
-                          <span class="btn-inner--text">View</span>
-                      </button>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">Maintainance Charges</span>
-                        </div>
-                      </div>
-                    </th>
-                    <td class="budget">INR 84,000</td>
-                    <td>
-                      <span class="badge badge-dot mr-4">
-                        <i class="bg-danger"></i>
-                        <span class="status">rejected</span>
-                      </span>
-                    </td>
-                    <td>
-                      <div class="avatar-group">
-                        <p class="name mb-0 text-sm">Abc Services Ltd.</p>
-                      </div>
-                    </td>
-                    <td>
-                      <button class="btn btn-icon btn-outline-info" type="button" disabled>
-                        <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
-                          <span class="btn-inner--text">View</span>
-                      </button>
-                    </td>
-                  </tr>
-
-                </tbody>
-              </table>
+        <!-- [ header ] -->
+        <div class="header pb-6">
+          <div class="container-fluid">
+            <div class="header-body">
+              <%- include('../../partials/header', {settings:'', page: 'Invoices' }); %>
             </div>
           </div>
         </div>
-      </div>
-      <!-- [ footer ] -->
-      <%- include('../../partials/footer'); %>
+
+        <!-- [ page content ] -->
+        <div class="container-fluid mt--6">
+          <div class="row"> <!-- add invoice - modal -->
+            <div class="col">
+              <% if (data[0].acctype == 'm') { %>
+                <%- include('../../partials/add-invoice.ejs') %>
+              <% } %>
+
+            </div> <!-- //col -->
+          </div> <!-- //row -->
+          <div class="row">
+            <div class="col">
+              <div class="card bg-light shadow">
+                <div class="card-header bg-light border-0">
+                  <h3 class="text-dark mb-0">Invoice History
+                    <% switch (data[0].acctype) { case 'b' : %>
+                      <span class="badge badge-pill badge-primary float-right">Account Type: Buyer</span>
+                      <% break; case 'm' : %>
+                        <span class="badge badge-pill badge-primary float-right">Account Type: Merchant</span>
+                        <% break; } %>
+                  </h3>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-light table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col" class="sort" data-sort="name">Service Name</th>
+                        <th scope="col" class="sort" data-sort="budget">Amount</th>
+                        <th scope="col" class="sort" data-sort="status">Status</th>
+
+                        <% switch (data[0].acctype) { case 'b' : %>
+                        <th scope="col">Merchant</th>
+                        <% break; case 'm' : %>
+                        <th scope="col">Buyer</th>
+                        <% break; } %>
+                        
+                        <th scope="col" class="sort" data-sort="completion">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="list">
+                      <tr>
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                              <span class="name mb-0 text-sm">Transport Service</span>
+                              <span class="badge badge-pill badge-danger">URGENT</span> <!-- remove these tags upon approval or rejection of the invoice -->
+                            </div>
+                          </div>
+                        </th>
+                        <td class="budget">INR 50,000</td>
+                        <td>
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-warning"></i>
+                            <span class="status">pending</span>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="avatar-group">
+                            <p class="name mb-0 text-sm">Abc Services Ltd.</p>
+                          </div>
+                        </td>
+                        <td>
+                          <button class="btn btn-icon btn-outline-info" type="button">
+                            <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+                            <span class="btn-inner--text">View</span>
+                          </button>
+                          <% if (data[0].acctype=='b' ) { %>
+                            <button class="btn btn-icon btn-outline-danger" type="button">
+                              <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
+                              <span class="btn-inner--text">Delete</span>
+                            </button>
+                            <% } %>
+
+                              <% if (data[0].acctype=='m' ) { %>
+                                <button class="btn btn-icon btn-outline-success" type="button">
+                                  <span class="btn-inner--icon"><i class="ni ni-check-bold"></i></span>
+                                  <span class="btn-inner--text">Approve</span>
+                                </button>
+                                <button class="btn btn-icon btn-outline-danger" type="button">
+                                  <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
+                                  <span class="btn-inner--text">Reject</span>
+                                </button>
+                                <% } %>
+
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                              <span class="name mb-0 text-sm">Internet Service</span>
+                            </div>
+                          </div>
+                        </th>
+                        <td class="budget">INR 32,500</td>
+                        <td>
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-success"></i>
+                            <span class="status">approved</span>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="avatar-group">
+                            <p class="name mb-0 text-sm">Xyz Services Ltd.</p>
+                          </div>
+                        </td>
+                        <td>
+                          <button class="btn btn-icon btn-outline-info" type="button">
+                            <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+                            <span class="btn-inner--text">View</span>
+                          </button>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                              <span class="name mb-0 text-sm">Maintainance Charges</span>
+                            </div>
+                          </div>
+                        </th>
+                        <td class="budget">INR 84,000</td>
+                        <td>
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-danger"></i>
+                            <span class="status">rejected</span>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="avatar-group">
+                            <p class="name mb-0 text-sm">Abc Services Ltd.</p>
+                          </div>
+                        </td>
+                        <td>
+                          <button class="btn btn-icon btn-outline-info" type="button" disabled>
+                            <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+                            <span class="btn-inner--text">View</span>
+                          </button>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- [ footer ] -->
+          <%- include('../../partials/footer'); %>
+        </div>
     </div>
-  </div>
-  <!-- [ scripts ] -->
-  <%- include('../../partials/scripts'); %>
+    <!-- [ scripts ] -->
+    <%- include('../../partials/scripts'); %>
 </body>
 
 </html>

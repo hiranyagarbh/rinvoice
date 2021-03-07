@@ -1,0 +1,63 @@
+<!-- add button -->
+<button type="button" class="btn btn-block btn-outline-success w-25 float-right mb-2" data-toggle="modal"
+    data-target="#modal-form">Add Invoice</button>
+
+<!-- modal -->
+<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card bg-secondary border-0 mb-0">
+                    <div class="card-body px-lg-4 py-lg-4">
+                        <div class="text-left text-muted mb-4">
+                            <small>Fill in the invoice details:</small>
+                        </div>
+                        <form role="form" method="POST">
+                            <div class="form-group mb-3">
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-delivery-fast"></i></span>
+                                    </div>
+                                    <input class="form-control" placeholder="Name of Service" type="text" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
+                                    </div>
+                                    <input class="form-control" placeholder="Invoice Amount" type="number" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                    </div>
+                                    <input class="form-control" placeholder="Email of Buyer" type="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFileLang" accept=".pdf"
+                                        lang="en" required>
+                                    <label class="custom-file-label" for="customFileLang"></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkurgent">
+                                    <label class="custom-control-label" for="checkurgent">Urgent?</label>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-dark mt-4">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
