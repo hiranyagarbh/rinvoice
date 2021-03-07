@@ -7,32 +7,24 @@ exports.register = function (req, res) {
         var name = post.name;
         var email = post.email
         var password = post.password;
-        var acctype = 0;
-        //var acctype = document.querySelector('input[name="acctype"]:checked').value;
-
-        // check for empty fields
-        if (name == '' || email == '' || password == '') {
-            message = 'Please enter all credentials.';
-            res.render('pages/register.ejs', { message: message });
-
-        } else {
-            var sql = "INSERT INTO users (id, name, email, password, acctype) VALUES (?)";
-            var query = db.query(sql, [[id, name, email, password, acctype]], function (err, rows, fields, results) {
-                if (err) {
-                    // check for duplicate entry
-                    if (err.errno == 1062) {
-                        message = 'Email address already exists';
-                        res.render('pages/register.ejs', { message: message });
-                        console.log(err.message);
-                    }
-                    else {
-                        throw err;
-                    }
-                } else {
-                    res.redirect('/login');
+        var acctype = post.acctype;
+        console.log(acctype);
+        var sql = "INSERT INTO users (id, name, email, password, acctype) VALUES (?)";
+        var query = db.query(sql, [[id, name, email, password, acctype]], function (err, rows, fields, results) {
+            if (err) {
+                // check for duplicate entry
+                if (err.errno == 1062) {
+                    message = 'Email address already exists';
+                    res.render('pages/register.ejs', { message: message });
+                    console.log(err.message);
                 }
-            });
-        }
+                else {
+                    throw err;
+                }
+            } else {
+                res.redirect('/login');
+            }
+        });
     }
     else {
         res.render('pages/register.ejs', { message: message });
@@ -83,7 +75,7 @@ exports.dashboard = function (req, res, next) {
     var user = req.session.user;
     var userId = req.session.userId;
     var email = req.session.email;
-    console.log('User ID = ' + userId);
+    // console.log('User ID = ' + userId);
     if (userId == null) {
         res.redirect("/login");
         return;
@@ -100,7 +92,7 @@ exports.invoices = function (req, res, next) {
 
     var user = req.session.user;
     var userId = req.session.userId;
-    console.log('User ID = ' + userId);
+    // console.log('User ID = ' + userId); 
     if (userId == null) {
         res.redirect("/login");
         // return;
@@ -116,7 +108,7 @@ exports.profile = function (req, res, next) {
 
     var user = req.session.user;
     var userId = req.session.userId;
-    console.log('User ID = ' + userId);
+    // console.log('User ID = ' + userId);
     if (userId == null) {
         res.redirect("/login");
         // return;
