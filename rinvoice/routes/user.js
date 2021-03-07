@@ -41,28 +41,21 @@ exports.login = function (req, res) {
         var email = post.email;
         var password = post.password;
 
-        // check for empty fields
-        if (email == '' || password == '') {
-            message = 'Please enter all credentails.';
-            res.render('pages/login.ejs', { message: message });
-        }
-        else {
-            var sql = "SELECT id, name, email, password, acctype FROM users WHERE email = ? AND password = ?";
-            db.query(sql, [email, password], function (err, results) {
-                if (results.length && email == results[0].email && password == results[0].password) {
-                    req.session.userId = results[0].id;
-                    req.session.user = results[0];
-                    req.session.email = results[0].email;
-                    console.log(results[0].id);
-                    res.redirect('/home/dashboard');
-                }
-                else {
-                    message = 'Incorrect email or password.';
-                    res.render('pages/login.ejs', { message: message });
-                    console.log(message);
-                }
-            });
-        }
+        var sql = "SELECT id, name, email, password, acctype FROM users WHERE email = ? AND password = ?";
+        db.query(sql, [email, password], function (err, results) {
+            if (results.length && email == results[0].email && password == results[0].password) {
+                req.session.userId = results[0].id;
+                req.session.user = results[0];
+                req.session.email = results[0].email;
+                console.log(results[0].id);
+                res.redirect('/home/dashboard');
+            }
+            else {
+                message = 'Incorrect email or password.';
+                res.render('pages/login.ejs', { message: message });
+                console.log(message);
+            }
+        });
     } else {
         res.render('pages/login.ejs', { message: message });
     }
@@ -116,7 +109,8 @@ exports.profile = function (req, res, next) {
     var sql = "SELECT * FROM users WHERE id = ?";
     db.query(sql, [userId], function (err, results) {
         res.render('pages/home/profile.ejs', { data: results });
-        // console.log(results);
+        console.log(results);
+        // console.log('Account Type = ' + results[0].acctype);
     });
 };
 
