@@ -30,8 +30,18 @@
           <div class="card border-thick">
             <div class="card-header">
               <div class="row align-items-center">
-                <div class="col-12">
-                  <h3 class="mb-0">Edit profile </h3>
+                <div class="col-6">
+                  <h3 class="mb-0">Edit profile</h3>
+                </div>
+                <div class="col-6">
+                  <% switch (data[0].acctype) {
+                    case 'b' : %>
+                            <span class="badge badge-pill badge-primary float-right">Account Type: Buyer</span>
+                            <% break;
+                    case 'm' : %>
+                            <span class="badge badge-pill badge-primary float-right">Account Type: Merchant</span>
+                            <% break;
+                    } %>
                 </div>
               </div>
             </div>
