@@ -17,8 +17,11 @@ const morganMiddleware = logger(function (tokens, req, res) {
   ].join(' ');
 });
 
-var routes = require('./routes');
+// var routes = require('./routes');
 var user = require('./routes/user');
+var invoices = require('./routes/invoices');
+var profile = require('./routes/profile');
+var auth = require('./routes/auth');
 
 var mysql = require('mysql');
 var session = require('express-session');
@@ -82,21 +85,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 // s3: add to static files in /views/pages
 
 // call for register page
-app.get('/register', user.register);
-app.post('/register', user.register);
+app.get('/register', auth.register);
+app.post('/register', auth.register);
 
 // call for login page
-app.get('/login', user.login);
-app.post('/login', user.login);
+app.get('/login', auth.login);
+app.post('/login', auth.login);
 
 // call for home page after login
 app.get('/home/dashboard', user.dashboard);
 // call for invoices page after login
-app.get('/home/invoices', user.invoices);
+app.get('/home/invoices', invoices.invoices);
 // call for logout
 app.get('/home/logout', user.logout);
 // call for profile
-app.get('/home/profile', user.profile)
+app.get('/home/profile', profile.profile);
 
 
 // ====== [ error handling ] ======
