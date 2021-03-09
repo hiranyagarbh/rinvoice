@@ -17,17 +17,34 @@ const morganMiddleware = logger(function (tokens, req, res) {
   ].join(' ');
 });
 
+var mysql = require('mysql');
+var session = require('express-session');
+var bodyParser = require("body-parser");
+
+// multer - https://www.npmjs.com/package/multer
+var multer = require('multer');
+// var upload_invoice = multer({dest: 'uploads/'});
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    // cb(null, file.originalname + '-' + Date().toString() + path.extname(file.originalname)) // appending extension
+    cb(null, file.originalname) // appending extension
+  }
+});
+
+var upload_invoice = multer({ storage: storage });
+
+var app = express();
+
+// ====== [ routes ] ======
 // var routes = require('./routes');
 var user = require('./routes/user');
 var invoices = require('./routes/invoices');
 var profile = require('./routes/profile');
 var auth = require('./routes/auth');
-
-var mysql = require('mysql');
-var session = require('express-session');
-var bodyParser = require("body-parser");
-
-var app = express();
 
 // ====== [ db conn ] ======
 var conn = mysql.createConnection({
@@ -94,8 +111,11 @@ app.post('/login', auth.login);
 
 // call for home page after login
 app.get('/home/dashboard', user.dashboard);
-// call for invoices page after login
+
+// call for invoices page + add invoice
 app.get('/home/invoices', invoices.invoices);
+app.post('/home/invoices/add', upload_invoice.single("in_file"), invoices.addInvoice);
+
 // call for logout
 app.get('/home/logout', user.logout);
 
