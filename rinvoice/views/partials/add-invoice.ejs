@@ -12,13 +12,13 @@
                         <div class="text-left text-muted mb-4">
                             <small>Fill in the invoice details:</small>
                         </div>
-                        <form role="form" method="POST">
+                        <form role="form" method="POST" enctype="multipart/form-data" action="/home/invoices/add">
                             <div class="form-group mb-3">
                                 <div class="input-group input-group-merge input-group-alternative">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-delivery-fast"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="Name of Service" type="text" required>
+                                    <input class="form-control" placeholder="Name of Service" type="text" name="service" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -26,7 +26,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="Invoice Amount" type="number" required>
+                                    <input class="form-control" placeholder="Invoice Amount" name="amount" type="number" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -34,25 +34,25 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="Email of Buyer" type="email" required>
+                                    <input class="form-control" placeholder="Email of Buyer" name="buyer_email" type="email" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFileLang" accept=".pdf"
+                                    <input type="file" class="custom-file-input" id="customFileLang" name="in_file" accept=".pdf"
                                         lang="en" required>
                                     <label class="custom-file-label" for="customFileLang"></label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="checkurgent">
+                                    <input type="checkbox" class="custom-control-input" id="checkurgent" name="checkurgent">
                                     <label class="custom-control-label" for="checkurgent">Urgent?</label>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-dark mt-4">Submit</button>
+                                <button type="submit" class="btn btn-dark mt-4">Add Invoice</button>
                             </div>
                         </form>
                     </div>
