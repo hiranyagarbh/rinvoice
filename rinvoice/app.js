@@ -98,8 +98,10 @@ app.get('/home/dashboard', user.dashboard);
 app.get('/home/invoices', invoices.invoices);
 // call for logout
 app.get('/home/logout', user.logout);
+
 // call for profile
 app.get('/home/profile', profile.profile);
+app.post('/home/profile', profile.profile);
 
 
 // ====== [ error handling ] ======
