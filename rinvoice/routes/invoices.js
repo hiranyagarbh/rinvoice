@@ -27,9 +27,11 @@ exports.addInvoice = function (req, res) {
     // urgent checkbox
     var checkurgent = 'n';
     if (addinv.checkurgent == 'on') { checkurgent = 'y'; }
+    // invoice status (initial char) - [ nill (default value), approved, rejected ]
+    var invstatus = 'n';
 
-    var sql = "INSERT INTO invoices VALUES (?,?,?,?,?)";
-    db.query(sql, [service, amount, buyer_email, in_filePath, checkurgent], function(err, results){
+    var sql = "INSERT INTO invoices VALUES (?,?,?,?,?,?)";
+    db.query(sql, [service, amount, buyer_email, in_filePath, checkurgent, invstatus], function(err, results){
         if (err) {
             console.log(err.message);
         } else {
