@@ -25,6 +25,8 @@ var bodyParser = require("body-parser");
 var multer = require('multer');
 // var upload_invoice = multer({dest: 'uploads/'});
 
+
+// -- [BUG] duplicate name replacing files automatically
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
