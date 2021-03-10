@@ -23,12 +23,14 @@ DROP TABLE IF EXISTS `invoices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invoices` (
+  `m_uid` int NOT NULL,
   `service` varchar(50) NOT NULL,
   `amount` int NOT NULL,
   `buyeremail` varchar(50) NOT NULL,
   `filepath` varchar(255) NOT NULL,
   `urgent` char(1) NOT NULL,
-  `status` char(1) DEFAULT 'n'
+  `status` char(1) DEFAULT 'n',
+  `dateadded` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,4 +62,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-09 19:32:58
+-- Dump completed on 2021-03-10 15:43:19
