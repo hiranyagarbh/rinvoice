@@ -62,55 +62,89 @@
                         <th scope="col" class="sort" data-sort="completion">Actions</th>
                       </tr>
                     </thead>
+
                     <tbody class="list">
+                      <!-- [ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach ] -->
+                      <% data.forEach(invoice => {%>
                       <tr>
+
+                        <!-- service name -->
                         <th scope="row">
                           <div class="media align-items-center">
                             <div class="media-body">
-                              <span class="name mb-0 text-sm">Transport Service</span>
-                              <span class="badge badge-pill badge-danger">URGENT</span> <!-- remove these tags upon approval or rejection of the invoice -->
+                              <span class="name mb-0 text-sm"><%=invoice.service%></span>
+                              <% if (invoice.urgent == 'y' && invoice.status == 'n'){%>
+                                <span class="badge badge-pill badge-danger">URGENT</span>  <!-- remove these tags upon approval or rejection of the invoice -->
+                              <%}%> 
                             </div>
                           </div>
                         </th>
-                        <td class="budget">INR 50,000</td>
+
+                        <!-- invoice amount -->
+                        <td class="budget">INR <%=invoice.amount.toLocaleString()%></td>
+
+                        <!-- invoice status -->
                         <td>
                           <span class="badge badge-dot mr-4">
-                            <i class="bg-warning"></i>
-                            <span class="status">pending</span>
+                            <% if (invoice.status == 'n') {%>
+                              <i class="bg-warning"></i>
+                              <span class="status">pending</span>
+                            <%} else if (invoice.status == 'a') {%>
+                              <i class="bg-success"></i>
+                              <span class="status">approved</span>
+                            <%} else if (invoice.status == 'r') {%>
+                              <i class="bg-danger"></i>
+                              <span class="status">rejected</span>
+                            <%}%>
                           </span>
                         </td>
+
+                        <!-- buyer email -->
+                        <!-- try updating email to buyer name from 'users' table -->
                         <td>
                           <div class="avatar-group">
-                            <p class="name mb-0 text-sm">Abc Services Ltd.</p>
+                            <p class="name mb-0 text-sm"><%=invoice.buyeremail%></p>
                           </div>
                         </td>
+
+                        <!-- action bts -->
                         <td>
-                          <button class="btn btn-icon btn-outline-info" type="button">
-                            <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
-                            <span class="btn-inner--text">View</span>
-                          </button>
-                          <% if (data[0].acctype=='b' ) { %>
+                          <% if (invoice.status == 'n') {%>
+                            <button class="btn btn-icon btn-outline-info" type="button">
+                              <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+                              <span class="btn-inner--text">View</span>
+                            </button>
+  
+                            <% if (data[0].acctype=='b' ) { %>
                             <button class="btn btn-icon btn-outline-danger" type="button">
                               <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
                               <span class="btn-inner--text">Delete</span>
                             </button>
                             <% } %>
-
-                              <% if (data[0].acctype=='m' ) { %>
-                                <button class="btn btn-icon btn-outline-success" type="button">
-                                  <span class="btn-inner--icon"><i class="ni ni-check-bold"></i></span>
-                                  <span class="btn-inner--text">Approve</span>
-                                </button>
-                                <button class="btn btn-icon btn-outline-danger" type="button">
-                                  <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
-                                  <span class="btn-inner--text">Reject</span>
-                                </button>
-                                <% } %>
+  
+                            <% if (data[0].acctype=='m' ) { %>
+                            <button class="btn btn-icon btn-outline-success" type="button">
+                              <span class="btn-inner--icon"><i class="ni ni-check-bold"></i></span>
+                              <span class="btn-inner--text">Approve</span>
+                            </button>
+                            <button class="btn btn-icon btn-outline-danger" type="button">
+                              <span class="btn-inner--icon"><i class="ni ni-basket"></i></span>
+                              <span class="btn-inner--text">Reject</span>
+                            </button>
+                            <% } %>
+                          <%} else {%>
+                            <button class="btn btn-icon btn-outline-info" type="button">
+                              <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+                              <span class="btn-inner--text">View</span>
+                            </button>
+                          <%}%> 
 
                         </td>
                       </tr>
 
-                      <tr>
+                      <% }); %> <!-- // forEach loop -->
+
+                      <!-- <tr>
                         <th scope="row">
                           <div class="media align-items-center">
                             <div class="media-body">
@@ -164,7 +198,7 @@
                             <span class="btn-inner--text">View</span>
                           </button>
                         </td>
-                      </tr>
+                      </tr> -->
 
                     </tbody>
                   </table>
