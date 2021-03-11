@@ -53,10 +53,6 @@ A tamper-proof invoice financing solution using Blockchain.
             └── topnav.ejs
 ```
 
-### languages and tools used
----
-[![JavaScript](https://img.shields.io/badge/-JavaScript-000?&logo=JavaScript&logoColor=ddc508) ![SQL](https://img.shields.io/badge/-SQL-000?&logo=MySQL&logoColor=4479A1) ![AWS](https://img.shields.io/badge/-AWS-000?&logo=Amazon-AWS&logoColor=FF9900) ![Linux](https://img.shields.io/badge/-Linux-000?&logo=Linux&logoColor=FCC624) ![Node.js](https://img.shields.io/badge/-Node.js-000?&logo=node.js)
-
 ### installation
 ---
 
