@@ -72,7 +72,7 @@
                         <th scope="row">
                           <div class="media align-items-center">
                             <div class="media-body">
-                              <span class="name mb-0 text-sm"><%=invoice.service%></span>
+                              <span class="name mb-0 text-sm"><%if(invoice.service==null){%>You have no invoices generated yet.<% } else { %><%= invoice.service %> <% } %> </span>
                               <% if (invoice.urgent == 'y' && invoice.status == 'n'){%>
                                 <span class="badge badge-pill badge-danger">URGENT</span>  <!-- remove these tags upon approval or rejection of the invoice -->
                               <%}%> 
@@ -81,12 +81,12 @@
                         </th>
 
                         <!-- invoice amount -->
-                        <td class="budget">INR <%=invoice.amount.toLocaleString()%></td>
+                        <td class="budget"><% if (invoice.amount!=null) { %>INR <%=invoice.amount.toLocaleString()%><% } %></td>
 
                         <!-- invoice status -->
                         <td>
                           <span class="badge badge-dot mr-4">
-                            <% if (invoice.status == 'n') {%>
+                            <% if (invoice.status!=null) { if (invoice.status == 'n') {%>
                               <i class="bg-warning"></i>
                               <span class="status">pending</span>
                             <%} else if (invoice.status == 'a') {%>
@@ -95,20 +95,27 @@
                             <%} else if (invoice.status == 'r') {%>
                               <i class="bg-danger"></i>
                               <span class="status">rejected</span>
-                            <%}%>
+                            <%}}%>
                           </span>
                         </td>
 
-                        <!-- buyer email -->
-                        <!-- try updating email to buyer name from 'users' table -->
+                        <!-- merchant/buyer name -->
                         <td>
                           <div class="avatar-group">
-                            <p class="name mb-0 text-sm"><%=invoice.buyeremail%></p>
+                            <p class="name mb-0 text-sm">
+                              <% switch (invoice.acctype) { case 'b' : %>
+                                <% if(invoice.m_email!=null) {%><%=invoice.m_email%><% } %></p>
+                              <% break; case 'm' : %>
+                                <% if(invoice.buyeremail!=null) {%><%=invoice.buyeremail%><% } %></p>
+                              <% break; } %>
                           </div>
                         </td>
 
                         <!-- action bts -->
                         <td>
+
+                          <% if (invoice.name!=null && invoice.amount!=null) { %> 
+
                           <% if (invoice.status == 'n') {%>
                             <button class="btn btn-icon btn-outline-info" type="button">
                               <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
@@ -137,7 +144,7 @@
                               <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
                               <span class="btn-inner--text">View</span>
                             </button>
-                          <%}%> 
+                          <%}}%> <!-- second } for null check loop -->
 
                         </td>
                       </tr>
