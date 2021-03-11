@@ -1,4 +1,4 @@
-.
+rinvoice
 ├── FileStructure.md
 ├── README.md
 ├── resources
@@ -13,19 +13,30 @@
     ├── app.js
     ├── bin
     │   └── www
-    ├── node_modules
     ├── package-lock.json
     ├── package.json
     ├── public
     │   ├── images
     │   ├── javascripts
     │   └── stylesheets
+    ├── rinvoice.sql
     ├── routes
-    │   ├── home.js
+    │   ├── auth.js
+    │   ├── index.js
     │   ├── invoices.js
-    │   ├── login.js
     │   ├── profile.js
-    │   └── register.js
+    │   └── user.js
+    ├── uploads
     └── views
         ├── pages
+        │   ├── home
+        │   ├── login.ejs
+        │   └── register.ejs
         └── partials
+            ├── add-invoice.ejs
+            ├── footer.ejs
+            ├── header.ejs
+            ├── html_head.ejs
+            ├── scripts.ejs
+            ├── sidenav.ejs
+            └── topnav.ejs
