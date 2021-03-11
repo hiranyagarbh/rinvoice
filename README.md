@@ -84,7 +84,7 @@ install dependencies
 > npm install
 ```
 
-next, import db schema and update the db credentials in [app.js](rinvoice/app.js)
+next, import the mysql [db schema](rinvoice/rinvoice.sql) and update the db credentials in [app.js](rinvoice/app.js)
 
 
 start the express server
