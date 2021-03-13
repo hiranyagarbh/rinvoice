@@ -24,27 +24,34 @@ A tamper-proof invoice financing solution using Blockchain.
     ├── app.js
     ├── bin
     │   └── www
-    ├── node_modules
     ├── package-lock.json
     ├── package.json
     ├── public
     │   ├── images
     │   ├── javascripts
     │   └── stylesheets
+    ├── rinvoice.sql
     ├── routes
-    │   ├── home.js
+    │   ├── auth.js
+    │   ├── index.js
     │   ├── invoices.js
-    │   ├── login.js
     │   ├── profile.js
-    │   └── register.js
+    │   └── user.js
+    ├── uploads
     └── views
         ├── pages
+        │   ├── home
+        │   ├── login.ejs
+        │   └── register.ejs
         └── partials
+            ├── add-invoice.ejs
+            ├── footer.ejs
+            ├── header.ejs
+            ├── html_head.ejs
+            ├── scripts.ejs
+            ├── sidenav.ejs
+            └── topnav.ejs
 ```
-
-### languages and tools used
----
-[![JavaScript](https://img.shields.io/badge/-JavaScript-000?&logo=JavaScript&logoColor=ddc508)](https://github.com/adamalston?tab=repositories&q=&type=&language=javascript) ![SQL](https://img.shields.io/badge/-SQL-000?&logo=MySQL&logoColor=4479A1) ![AWS](https://img.shields.io/badge/-AWS-000?&logo=Amazon-AWS&logoColor=FF9900) ![Linux](https://img.shields.io/badge/-Linux-000?&logo=Linux&logoColor=FCC624) ![Node.js](https://img.shields.io/badge/-Node.js-000?&logo=node.js)
 
 ### installation
 ---
@@ -76,6 +83,9 @@ install dependencies
 ```sh
 > npm install
 ```
+
+next, import the mysql [db schema](rinvoice/rinvoice.sql) and update the db credentials in [app.js](rinvoice/app.js)
+
 
 start the express server
 ```sh
