@@ -113,13 +113,18 @@ app.post('/login', auth.login);
 
 // call for home page after login
 app.get('/home/dashboard', user.dashboard);
+// call for logout
+app.get('/home/logout', user.logout);
 
+// ===== [ invoice page ] =====
 // call for invoices page + add invoice
 app.get('/home/invoices', invoices.invoices);
 app.post('/home/invoices/add', upload_invoice.single("in_file"), invoices.addInvoice);
-
-// call for logout
-app.get('/home/logout', user.logout);
+// invoice action btns
+// app.post('/home/invoices/view-inv', invoices.invActionView);
+app.post('/home/invoices/approve', invoices.invActionApprove);
+app.post('/home/invoices/reject', invoices.invActionReject);
+app.post('/home/invoices/delete', invoices.invActionDelete);
 
 // call for profile
 app.get('/home/profile', profile.profile);
