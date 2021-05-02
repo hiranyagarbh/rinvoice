@@ -7,14 +7,14 @@ var http = require('http');
 // ====== [ dev ] ======
 var logger = require('morgan');
 var chalk = require('chalk');
-const morganMiddleware = logger(function (tokens, req, res) {
-  return [
-    // chalk.hex('#ff4757').bold('🍄  Morgan --> '),
-    chalk.hex('#f78fb3')(tokens.method(req, res)),
-    chalk.cyan(tokens.status(req, res)),
-    chalk.hex('#A4A7AA')(tokens.url(req, res)),
-    chalk.hex('#fffa65')(tokens['response-time'](req, res) + ' ms')
-  ].join(' ');
+const morganMiddleware = logger(function(tokens, req, res) {
+    return [
+        // chalk.hex('#ff4757').bold('🍄  Morgan --> '),
+        chalk.hex('#f78fb3')(tokens.method(req, res)),
+        chalk.cyan(tokens.status(req, res)),
+        chalk.hex('#A4A7AA')(tokens.url(req, res)),
+        chalk.hex('#fffa65')(tokens['response-time'](req, res) + ' ms')
+    ].join(' ');
 });
 
 var mysql = require('mysql');
@@ -28,13 +28,13 @@ var multer = require('multer');
 
 // -- [BUG] duplicate name replacing files automatically
 var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    // cb(null, file.originalname + '-' + Date().toString() + path.extname(file.originalname)) // appending extension
-    cb(null, file.originalname) // appending extension
-  }
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function(req, file, cb) {
+        // cb(null, file.originalname + '-' + Date().toString() + path.extname(file.originalname)) // appending extension
+        cb(null, file.originalname) // appending extension
+    }
 });
 
 var upload_invoice = multer({ storage: storage });
@@ -47,21 +47,22 @@ var user = require('./routes/user');
 var invoices = require('./routes/invoices');
 var profile = require('./routes/profile');
 var auth = require('./routes/auth');
+var upload_file = require('./routes/upload_file')
 
 // ====== [ db conn ] ======
 var conn = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root1234',
-  database: 'rinvoice'
+    host: 'localhost',
+    user: 'john',
+    password: 'john123',
+    database: 'rinvoice'
 });
 
 conn.connect((err) => {
-  if (err) {
-    console.error('Error establishing a database connection. ' + err.sqlMessage + '\nError Code: ' + err.code);
-    return;
-  }
-  console.log('Database connection successfully established!');
+    if (err) {
+        console.error('Error establishing a database connection. ' + err.sqlMessage + '\nError Code: ' + err.code);
+        return;
+    }
+    console.log('Database connection successfully established!');
 });
 
 global.db = conn; //single global DB connection 
@@ -69,16 +70,16 @@ global.db = conn; //single global DB connection
 
 // ====== [ session ] ======
 app.use(session({
-  secret: 'keyboard cat', // in production - store in env variable
-  resave: false,
-  saveUninitialized: true,
-  cookie: { 
-    maxAge: 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    // secure: true, == for production
-    secure: false,
-    sameSite: 'strict',
-  }
+    secret: 'keyboard cat', // in production - store in env variable
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        // secure: true, == for production
+        secure: false,
+        sameSite: 'strict',
+    }
 }));
 
 
@@ -130,18 +131,21 @@ app.post('/home/invoices/delete', invoices.invActionDelete);
 app.get('/home/profile', profile.profile);
 app.post('/home/profile', profile.profile);
 
+// call for upload_file
+app.get('/home/upload_file', upload_file.upload_file);
+
 
 // ====== [ error handling ] ======
 // add 404 & 500 page?
 
-app.use(function (req, res, next) {
-  res.status(404).send('404: Page Not Found!');
+app.use(function(req, res, next) {
+    res.status(404).send('404: Page Not Found!');
 });
 
 
 // middleware
-var listener = app.listen(8080, function () {
-  console.log('\x1b[36m%s\x1b[0m', 'Listening on port ' + listener.address().port);
+var listener = app.listen(8080, function() {
+    console.log('\x1b[36m%s\x1b[0m', 'Listening on port ' + listener.address().port);
 });
 
 module.exports = app;
