@@ -145,7 +145,7 @@ app.use(function(req, res, next) {
 
 // middleware
 var listener = app.listen(8080, function() {
-    console.log('\x1b[36m%s\x1b[0m', 'Listening on port ' + listener.address().port);
+    console.log('\x1b[36m%s\x1b[0m', 'View at http://localhost:' + listener.address().port + "/login");
 });
 
 module.exports = app;
