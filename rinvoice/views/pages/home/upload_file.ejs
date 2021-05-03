@@ -7,7 +7,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kbpgp try</title>
     <script src="/javascripts/components/init/kbpgp-2.1.0-min.js"></script>
+
+</head>
+
+<body>
+    Please select a file and then hit Evaluate:
+
+    <br/>
+    <br/>
+    <input id="file" type="file" />
+    <br/>
+    <br/>
+    <button id="button">Evaluate</button>
+
     <script>
+        document.getElementById('button').addEventListener('click', function() {
+            var files = document.getElementById('file').files;
+            if (files.length > 0) {
+                getBase64(files[0]);
+            }
+        });
+
+        function getBase64(file) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+                console.log(reader.result)
+
+                var b64 = reader.result.split(',')[1];
+
+                console.log("unencrypted pdf: " + b64);
+
+            };
+            reader.onerror = function(error) {
+                console.log('Error: ', error);
+            };
+        }
+
+        function b64ToPDF(b64) {
+
+            // Embed the PDF into the HTML page and show it to the user
+            var obj = document.createElement('object');
+            obj.style.width = '100%';
+            obj.style.height = '842pt';
+            obj.type = 'application/pdf';
+            obj.data = 'data:application/pdf;base64,' + b64;
+            document.body.appendChild(obj);
+
+            // Insert a link that allows the user to download the PDF file
+            var link = document.createElement('a');
+            link.innerHTML = 'Download PDF file';
+            link.download = 'file.pdf';
+            link.href = 'data:application/octet-stream;base64,' + b64;
+            document.body.appendChild(link);
+        }
+
+
+
+
         var vendor_pgp_public_key = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGNBGCOVgsBDADhui6kv2vhL6rWjLjFJzZP08C4So1329xe58d+AnkPJtKqWzx7
@@ -136,75 +193,107 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
 
         var vendor_passphrase = 'password'
 
-        kbpgp.KeyManager.import_from_armored_pgp({
-            armored: vendor_pgp_public_key
-        }, function(err, vendor_km) {
-            if (!err) {
-                console.log("vendor_km is loaded");
-            } else {
-                console.log(err)
-            }
-        });
+        function encryptDocument(vendor_pgp_public_key, vendor_passphrase, message) {
 
-        kbpgp.KeyManager.import_from_armored_pgp({
-            armored: vendor_pgp_public_key
-        }, function(err, vendor_km) {
-            if (!err) {
-                vendor_km.merge_pgp_private({
-                    armored: vendor_pgp_private_key
-                }, function(err) {
-                    if (!err) {
-                        if (vendor_km.is_pgp_locked()) {
-                            vendor_km.unlock_pgp({
-                                passphrase: vendor_passphrase
-                            }, function(err) {
-                                if (!err) {
-                                    console.log("Loaded private key with passphrase");
-                                }
-                            });
-                        } else {
-                            console.log("Loaded private key w/o passphrase");
-                        }
-                    }
+            kbpgp.KeyManager.import_from_armored_pgp({
+                armored: vendor_pgp_public_key
+            }, function(err, vendor_km) {
+                if (!err) {
+                    console.log("vendor is loaded")
+                        //#region IMPORTING PRIVATE KEY
+                        // vendor_km.merge_pgp_private({
+                        //     armored: vendor_pgp_private_key
+                        // }, function(err) {
+                        //     if (!err) {
+                        //         if (vendor_km.is_pgp_locked()) {
+                        //             vendor_km.unlock_pgp({
+                        //                 passphrase: vendor_passphrase
+                        //             }, function(err) {
+                        //                 if (!err) {
+                        //                     console.log("Loaded private key with passphrase");
+                        //                 }
+                        //             });
+                        //         } else {
+                        //             console.log("Loaded private key w/o passphrase");
+                        //         }
+                        //     }
+                        // });
+                        //#endregion
+                }
+
+                var params = {
+                    msg: message,
+                    encrypt_for: vendor_km
+                };
+
+                kbpgp.box(params, function(err, result_string, result_buffer) {
+                    // console.log(err, result_string, result_buffer);
+                    console.log(err, result_string)
                 });
-            }
+            });
+        }
 
-            var params = {
-                msg: "vendor, here's the pdf",
-                encrypt_for: vendor_km
-            };
+        function decryptDocument(vendor_pgp_private_key, vendor_passphrase, message) {
 
-            kbpgp.box(params, function(err, result_string, result_buffer) {
-                console.log(err, result_string, result_buffer);
+
+
+            kbpgp.KeyManager.import_from_armored_pgp({
+                armored: vendor_pgp_private_key
+            }, function(err, vendor_km) {
+                if (!err) {
+                    if (vendor_km.is_pgp_locked()) {
+                        vendor_km.unlock_pgp({
+                            passphrase: vendor_passphrase
+                        }, function(err) {
+                            if (!err) {
+                                console.log("Loaded private key with passphrase");
+                            }
+                        });
+                    } else {
+                        console.log("Loaded private key w/o passphrase");
+                    }
+                }
 
                 var ring = new kbpgp.keyring.KeyRing;
-                var kms = [vendor_km];
-                var pgp_msg = result_string;
+                ring.add_key_manager(vendor_km);
                 // var asp = /* as in Encryption ... */ ;
-                for (var i in kms) {
-                    ring.add_key_manager(kms[i]);
-                }
+
                 kbpgp.unbox({
                     keyfetch: ring,
-                    armored: pgp_msg
+                    armored: message
                 }, function(err, literals) {
                     if (err != null) {
                         return console.log("Problem: " + err);
                     } else {
                         console.log("decrypted message");
                         console.log(literals[0].toString());
-
-                        document.getElementById('processing').innerHTML = "completed\nmessage: " + literals[0].toString();
                     }
                 });
             });
-        });
-    </script>
-</head>
 
-<body>
-    <a href="/javascripts/components/init/kbpgp-2.1.0-min.js">the script</a>
-    <p id="processing">processing...</p>
+
+        }
+
+        var encryptedHelloWorld = `-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.0
+Comment: https://keybase.io/crypto
+
+wcDMA41ELf0NXdJ8AQv/RHc6TQlABUnWD65YTLbk013B/C8BY3gRbon0Uf6zvX6K
+FHgJAP/itjCL1Ue9HcqQoiOANAGarCdDLJTV9wi85M04YDrJso0XbuqlqdN+N/LJ
+uxuh/LyQ+A+QESDpWbGLfn66lC58CHiH4jM30uio98o3FeQGvhDtA+sEZTu/Q8Bf
+K79NQJnHn3QzwWN8N9+B3MJxPEiYKLcwHYR46zNwRdU1xwfhEt4Stg1/kxV0eZiz
+MwmTNX2Dp9GqDf1NMjZeUQgN5aG3Sfay2bQRElTfRM1bxbQ8jtMHIhDG8jiZ6nJd
+2DXvW9pgnRxxexfc5lCphXIwW85fbQ2P/24nNtcdsalQYDReMlyUPiPu7Jh425Iz
+JCqTN2EJlZ+MQKXPslg/MPTglvP5KlBeleOXjo/PSoU81jlpoxuGCZNi4pF/claV
+ZbIbL7xOIdOptzlgHFYQdwT1upkiBQFXM14OftQr5wxcirmcpmFcBejHAJBvZlWz
+ECQRjn8Nery7FApjecgn0kcBB0sbCX53qdi6iKOEKNEjswrO47NHdvms7+t9d+C+
+43QPPyVgNACgrhG8Hs54ZwyMNuLl0LkcCik+v4Zn5+NGrozPbWMlgA==
+=sHDs
+-----END PGP MESSAGE-----
+upload_file:231:29`
+
+        decryptDocument(vendor_pgp_private_key, vendor_passphrase, encryptedHelloWorld);
+    </script>
 </body>
 
 </html>
