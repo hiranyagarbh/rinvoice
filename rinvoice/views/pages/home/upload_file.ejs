@@ -18,51 +18,26 @@
     <input id="file" type="file" />
     <br/>
     <br/>
-    <button id="button">Evaluate</button>
+    <button id="button">Send Invoice</button>
 
     <script>
-        document.getElementById('button').addEventListener('click', function() {
-            var files = document.getElementById('file').files;
-            if (files.length > 0) {
-                getBase64(files[0]);
-            }
-        });
-
-        function getBase64(file) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function() {
-                console.log(reader.result)
-
-                var b64 = reader.result.split(',')[1];
-
-                console.log("unencrypted pdf: " + b64);
-
-            };
-            reader.onerror = function(error) {
-                console.log('Error: ', error);
-            };
-        }
-
         function b64ToPDF(b64) {
 
             // Embed the PDF into the HTML page and show it to the user
-            var obj = document.createElement('object');
-            obj.style.width = '100%';
-            obj.style.height = '842pt';
-            obj.type = 'application/pdf';
-            obj.data = 'data:application/pdf;base64,' + b64;
-            document.body.appendChild(obj);
+            var obj = document.createElement('object')
+            obj.style.width = '100%'
+            obj.style.height = '842pt'
+            obj.type = 'application/pdf'
+            obj.data = 'data:application/pdfbase64,' + b64
+            document.body.appendChild(obj)
 
             // Insert a link that allows the user to download the PDF file
-            var link = document.createElement('a');
-            link.innerHTML = 'Download PDF file';
-            link.download = 'file.pdf';
-            link.href = 'data:application/octet-stream;base64,' + b64;
-            document.body.appendChild(link);
+            var link = document.createElement('a')
+            link.innerHTML = 'Download PDF file'
+            link.download = 'file.pdf'
+            link.href = 'data:application/octet-streambase64,' + b64
+            document.body.appendChild(link)
         }
-
-
 
         // assign the public key here
         var buyer_pgp_public_key = `-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -105,7 +80,7 @@ AAAKCRCO7pu4kggo0243C/0Y4wHIwmIp7NPkeFqAec0tjnDRLluMckxLGztOH/JE
 p7yt4ceNRXwFlJ4954vU1zLBfrCzAwjHyONXI5PrblFEk8WDT7McntsdpvqnXkKG
 I7NvxZ6M76frO9QCV+Mg48M=
 =0zTp
------END PGP PUBLIC KEY BLOCK-----`;
+-----END PGP PUBLIC KEY BLOCK-----`
 
         // assign the private key here
         var buyer_pgp_private_key = `-----BEGIN PGP PRIVATE KEY BLOCK-----
@@ -199,7 +174,7 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
          * @param buyer_pgp_public_key public key of the buyer
          * @param buyer_passph
          */
-        function encryptDocument(buyer_pgp_public_key, message) {
+        function encryptDocument(buyer_pgp_public_key, message, callback) {
 
             kbpgp.KeyManager.import_from_armored_pgp({
                 armored: buyer_pgp_public_key
@@ -211,12 +186,10 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
                 var params = {
                     msg: message,
                     encrypt_for: buyer_key_manager
-                };
+                }
 
-                kbpgp.box(params, function(err, result_string, result_buffer) {
-                    console.log(err, result_string)
-                });
-            });
+                kbpgp.box(params, callback)
+            })
         }
 
         function decryptDocument(buyer_pgp_private_key, buyer_passphrase, message) {
@@ -229,34 +202,59 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
                             passphrase: buyer_passphrase
                         }, function(err) {
                             if (!err) {
-                                console.log("Loaded private key with passphrase");
+                                console.log("Loaded private key with passphrase")
                             }
-                        });
+                        })
                     } else {
-                        console.log("Loaded private key w/o passphrase");
+                        console.log("Loaded private key w/o passphrase")
                     }
                 }
 
-                var ring = new kbpgp.keyring.KeyRing;
-                ring.add_key_manager(buyer_key_manager);
+                var ring = new kbpgp.keyring.KeyRing
+                ring.add_key_manager(buyer_key_manager)
 
                 kbpgp.unbox({
                     keyfetch: ring,
                     armored: message
                 }, function(err, literals) {
                     if (err != null) {
-                        return console.log("Problem: " + err);
+                        return console.log("Problem: " + err)
                     } else {
-                        console.log("decrypted message");
+                        console.log("decrypted message")
 
-                        var decryptedMessage = literals[0].toString();
-                        console.log(decryptedMessage);
+                        var decryptedMessage = literals[0].toString()
+                        console.log(decryptedMessage)
                     }
-                });
-            });
-
-
+                })
+            })
         }
+
+        function getBase64(file, callback) {
+            var reader = new FileReader()
+            reader.readAsDataURL(file)
+
+            reader.onload = () => {
+                callback(reader)
+            }
+
+            reader.onerror = function(error) {
+                console.log('Error: ', error)
+            }
+        }
+
+        document.getElementById('button').addEventListener('click', function() {
+            var files = document.getElementById('file').files
+            if (files.length > 0) {
+
+                getBase64(files[0], (reader) => {
+                    b64 = reader.result.split(',')[1]
+                    encryptDocument(buyer_pgp_public_key, b64,
+                        function(err, result_string, result_buffer) {
+                            console.log(result_string)
+                        })
+                })
+            }
+        })
     </script>
 </body>
 
