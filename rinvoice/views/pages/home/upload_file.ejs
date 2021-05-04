@@ -64,8 +64,8 @@
 
 
 
-
-        var vendor_pgp_public_key = `-----BEGIN PGP PUBLIC KEY BLOCK-----
+        // assign the public key here
+        var buyer_pgp_public_key = `-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGNBGCOVgsBDADhui6kv2vhL6rWjLjFJzZP08C4So1329xe58d+AnkPJtKqWzx7
 kUgrZTgi2osnLbtLLz47JrBGZqm5GRI/jIN+U8bdtRYErfWXX6RAxoVu6FcsbOb6
@@ -107,7 +107,8 @@ I7NvxZ6M76frO9QCV+Mg48M=
 =0zTp
 -----END PGP PUBLIC KEY BLOCK-----`;
 
-        var vendor_pgp_private_key = `-----BEGIN PGP PRIVATE KEY BLOCK-----
+        // assign the private key here
+        var buyer_pgp_private_key = `-----BEGIN PGP PRIVATE KEY BLOCK-----
 
 lQWGBGCOVgsBDADhui6kv2vhL6rWjLjFJzZP08C4So1329xe58d+AnkPJtKqWzx7
 kUgrZTgi2osnLbtLLz47JrBGZqm5GRI/jIN+U8bdtRYErfWXX6RAxoVu6FcsbOb6
@@ -191,59 +192,41 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
 =vKg4
 -----END PGP PRIVATE KEY BLOCK-----`
 
-        var vendor_passphrase = 'password'
+        // assign the private password here
+        var buyer_passphrase = 'password'
 
-        function encryptDocument(vendor_pgp_public_key, vendor_passphrase, message) {
+        /**
+         * @param buyer_pgp_public_key public key of the buyer
+         * @param buyer_passph
+         */
+        function encryptDocument(buyer_pgp_public_key, message) {
 
             kbpgp.KeyManager.import_from_armored_pgp({
-                armored: vendor_pgp_public_key
-            }, function(err, vendor_km) {
+                armored: buyer_pgp_public_key
+            }, function(err, buyer_key_manager) {
                 if (!err) {
-                    console.log("vendor is loaded")
-                        //#region IMPORTING PRIVATE KEY
-                        // vendor_km.merge_pgp_private({
-                        //     armored: vendor_pgp_private_key
-                        // }, function(err) {
-                        //     if (!err) {
-                        //         if (vendor_km.is_pgp_locked()) {
-                        //             vendor_km.unlock_pgp({
-                        //                 passphrase: vendor_passphrase
-                        //             }, function(err) {
-                        //                 if (!err) {
-                        //                     console.log("Loaded private key with passphrase");
-                        //                 }
-                        //             });
-                        //         } else {
-                        //             console.log("Loaded private key w/o passphrase");
-                        //         }
-                        //     }
-                        // });
-                        //#endregion
+                    console.log("buyer key manager is loaded")
                 }
 
                 var params = {
                     msg: message,
-                    encrypt_for: vendor_km
+                    encrypt_for: buyer_key_manager
                 };
 
                 kbpgp.box(params, function(err, result_string, result_buffer) {
-                    // console.log(err, result_string, result_buffer);
                     console.log(err, result_string)
                 });
             });
         }
 
-        function decryptDocument(vendor_pgp_private_key, vendor_passphrase, message) {
-
-
-
+        function decryptDocument(buyer_pgp_private_key, buyer_passphrase, message) {
             kbpgp.KeyManager.import_from_armored_pgp({
-                armored: vendor_pgp_private_key
-            }, function(err, vendor_km) {
+                armored: buyer_pgp_private_key
+            }, function(err, buyer_key_manager) {
                 if (!err) {
-                    if (vendor_km.is_pgp_locked()) {
-                        vendor_km.unlock_pgp({
-                            passphrase: vendor_passphrase
+                    if (buyer_key_manager.is_pgp_locked()) {
+                        buyer_key_manager.unlock_pgp({
+                            passphrase: buyer_passphrase
                         }, function(err) {
                             if (!err) {
                                 console.log("Loaded private key with passphrase");
@@ -255,8 +238,7 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
                 }
 
                 var ring = new kbpgp.keyring.KeyRing;
-                ring.add_key_manager(vendor_km);
-                // var asp = /* as in Encryption ... */ ;
+                ring.add_key_manager(buyer_key_manager);
 
                 kbpgp.unbox({
                     keyfetch: ring,
@@ -266,33 +248,15 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
                         return console.log("Problem: " + err);
                     } else {
                         console.log("decrypted message");
-                        console.log(literals[0].toString());
+
+                        var decryptedMessage = literals[0].toString();
+                        console.log(decryptedMessage);
                     }
                 });
             });
 
 
         }
-
-        var encryptedHelloWorld = `-----BEGIN PGP MESSAGE-----
-Version: Keybase OpenPGP v2.1.0
-Comment: https://keybase.io/crypto
-
-wcDMA41ELf0NXdJ8AQv/RHc6TQlABUnWD65YTLbk013B/C8BY3gRbon0Uf6zvX6K
-FHgJAP/itjCL1Ue9HcqQoiOANAGarCdDLJTV9wi85M04YDrJso0XbuqlqdN+N/LJ
-uxuh/LyQ+A+QESDpWbGLfn66lC58CHiH4jM30uio98o3FeQGvhDtA+sEZTu/Q8Bf
-K79NQJnHn3QzwWN8N9+B3MJxPEiYKLcwHYR46zNwRdU1xwfhEt4Stg1/kxV0eZiz
-MwmTNX2Dp9GqDf1NMjZeUQgN5aG3Sfay2bQRElTfRM1bxbQ8jtMHIhDG8jiZ6nJd
-2DXvW9pgnRxxexfc5lCphXIwW85fbQ2P/24nNtcdsalQYDReMlyUPiPu7Jh425Iz
-JCqTN2EJlZ+MQKXPslg/MPTglvP5KlBeleOXjo/PSoU81jlpoxuGCZNi4pF/claV
-ZbIbL7xOIdOptzlgHFYQdwT1upkiBQFXM14OftQr5wxcirmcpmFcBejHAJBvZlWz
-ECQRjn8Nery7FApjecgn0kcBB0sbCX53qdi6iKOEKNEjswrO47NHdvms7+t9d+C+
-43QPPyVgNACgrhG8Hs54ZwyMNuLl0LkcCik+v4Zn5+NGrozPbWMlgA==
-=sHDs
------END PGP MESSAGE-----
-upload_file:231:29`
-
-        decryptDocument(vendor_pgp_private_key, vendor_passphrase, encryptedHelloWorld);
     </script>
 </body>
 
