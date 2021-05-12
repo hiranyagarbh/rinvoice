@@ -1,0 +1,11 @@
+{
+  "name": "rinvoice-miner",
+  "version": "1.0.0",
+  "description": "A mining tool for rinvoice blocks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shayak Banerjee",
+  "license": "ISC"
+}
