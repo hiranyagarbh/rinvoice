@@ -134,6 +134,10 @@ app.post('/home/profile', profile.profile);
 // call for upload_file
 app.get('/home/upload_file', upload_file.upload_file);
 
+// call for save_file_to_db
+app.post('/home/upload_file/save_invoice_to_db', (req, res) => {
+    console.log(req.body)
+})
 
 // ====== [ error handling ] ======
 // add 404 & 500 page?
