@@ -186,43 +186,6 @@ app.post('/home/upload_file/save_invoice_to_db', (req, res) => {
             console.log('added to mining queue')
         }
     })
-
-    // var sql = "INSERT INTO unminedInvoices(m_uid, m_email, service, amount, buyeremail, invoiceId, urgent, ifMined, encryptedMessage) VALUES(?,?,?,?,?,?,?,?,?);"
-    // db.query(sql, [
-    //     invoice_data.m_uid,
-    //     invoice_data.m_email,
-    //     invoice_data.service,
-    //     invoice_data.amount,
-    //     invoice_data.buyeremail,
-    //     invoice_data.unminedInvoiceId,
-    //     invoice_data.urgent,
-    //     invoice_data.ifMined,
-    //     invoice_data.encryptedMessage
-    // ], (err, result) => {
-    //     if (err) {
-    //         console.log(err)
-    //     } else {
-    //         res.redirect('/home/invoices')
-    //     }
-    // })
-
-    // sql = "INSERT INTO invoices(m_uid, m_email, service, amount, buyeremail, invoiceId, filepath, urgent, status, dateadded) VALUES(?,?,?,?,?,?,?,?,?,NOW())"
-    // db.query(sql, [
-    //     invoice_data.m_uid,
-    //     invoice_data.m_email,
-    //     invoice_data.service,
-    //     invoice_data.amount,
-    //     invoice_data.unminedInvoiceId,
-    //     invoice_data.unminedInvoiceId,
-    //     invoice_data.urgent,
-    //     'n'
-    // ], (err, result) => {
-    //     if (err) {
-    //         console.log(err)
-    //     }
-    //     res.redirect('/home/invoices')
-    // })
-
 })
 
 // ====== [ error handling ] ======
