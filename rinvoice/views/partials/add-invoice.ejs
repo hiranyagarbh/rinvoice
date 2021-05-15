@@ -257,24 +257,33 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
         var buyerEmail = document.getElementById('buyerEmail').value
         var invoiceAmount = document.getElementById('invoiceAmount').value
         var checkurgent = document.getElementById('checkurgent').value
+        var d = new Date()
+
         if (files.length > 0) {
 
             getBase64(files[0], (reader) => {
                 b64 = reader.result.split(',')[1]
                 encryptDocument(buyer_pgp_public_key, b64,
                     function(err, result_string, result_buffer) {
-                        // console.log(result_string)
+                        console.log(result_string)
 
                         var xhr = new XMLHttpRequest();
                         xhr.open("POST", '/home/upload_file/save_invoice_to_db', true);
                         xhr.setRequestHeader('Content-Type', 'application/json');
-                        xhr.send(JSON.stringify({
-                            encryptedMessage: result_string,
-                            nameOfService: nameOfService,
-                            buyerEmail: buyerEmail,
-                            invoiceAmount: invoiceAmount,
-                            checkurgent: checkurgent
-                        }));
+                        if (result_string) {
+                            xhr.send(JSON.stringify({
+                                encryptedMessage: result_string,
+                                nameOfService: nameOfService,
+                                buyerEmail: buyerEmail,
+                                invoiceAmount: invoiceAmount,
+                                checkurgent: checkurgent,
+                                dateadded: d
+                            }));
+
+                            alert('added invoice to mining queue')
+                        } else {
+                            alert('please refresh and retry')
+                        }
                     })
             })
         }

@@ -136,7 +136,93 @@ app.get('/home/upload_file', upload_file.upload_file);
 
 // call for save_file_to_db
 app.post('/home/upload_file/save_invoice_to_db', (req, res) => {
-    console.log(req.body)
+
+    var userId = req.session.userId;
+    var m_email = req.session.user.email;
+
+    var unminedInvoiceId = userId + "_" + req.body.dateadded
+
+    var invoice_data = {
+        m_uid: userId,
+        m_email: m_email,
+        service: req.body.nameOfService,
+        amount: req.body.invoiceAmount,
+        buyeremail: req.body.buyerEmail,
+        unminedInvoiceId: unminedInvoiceId,
+        urgent: req.body.checkurgent,
+        ifMined: false,
+        dateadded: req.body.dateadded,
+        encryptedMessage: req.body.encryptedMessage
+    }
+
+    if (invoice_data.urgent === "on") {
+        invoice_data.urgent = 'y'
+    }
+
+    var sql = "INSERT INTO invoices (m_uid, m_email, service, amount, buyeremail, invoiceId, filepath, urgent, status) VALUES (?,?,?,?,?,?,?,?,?)";
+    db.query(sql, [
+        invoice_data.m_uid,
+        invoice_data.m_email,
+        invoice_data.service,
+        invoice_data.amount,
+        invoice_data.buyeremail,
+        invoice_data.unminedInvoiceId,
+        "kahi nahi",
+        invoice_data.urgent,
+        "n"
+    ], function(err, results) {
+        if (err) { console.log(err.message); }
+        res.redirect('/home/invoices');
+    });
+
+    var sql = 'INSERT INTO miningQueue VALUES (?,?);'
+    db.query(sql, [
+        invoice_data.unminedInvoiceId,
+        invoice_data.encryptedMessage
+    ], (err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log('added to mining queue')
+        }
+    })
+
+    // var sql = "INSERT INTO unminedInvoices(m_uid, m_email, service, amount, buyeremail, invoiceId, urgent, ifMined, encryptedMessage) VALUES(?,?,?,?,?,?,?,?,?);"
+    // db.query(sql, [
+    //     invoice_data.m_uid,
+    //     invoice_data.m_email,
+    //     invoice_data.service,
+    //     invoice_data.amount,
+    //     invoice_data.buyeremail,
+    //     invoice_data.unminedInvoiceId,
+    //     invoice_data.urgent,
+    //     invoice_data.ifMined,
+    //     invoice_data.encryptedMessage
+    // ], (err, result) => {
+    //     if (err) {
+    //         console.log(err)
+    //     } else {
+    //         res.redirect('/home/invoices')
+    //     }
+    // })
+
+    // sql = "INSERT INTO invoices(m_uid, m_email, service, amount, buyeremail, invoiceId, filepath, urgent, status, dateadded) VALUES(?,?,?,?,?,?,?,?,?,NOW())"
+    // db.query(sql, [
+    //     invoice_data.m_uid,
+    //     invoice_data.m_email,
+    //     invoice_data.service,
+    //     invoice_data.amount,
+    //     invoice_data.unminedInvoiceId,
+    //     invoice_data.unminedInvoiceId,
+    //     invoice_data.urgent,
+    //     'n'
+    // ], (err, result) => {
+    //     if (err) {
+    //         console.log(err)
+    //     }
+    //     res.redirect('/home/invoices')
+    // })
+
 })
 
 // ====== [ error handling ] ======
