@@ -188,6 +188,20 @@ app.post('/home/upload_file/save_invoice_to_db', (req, res) => {
     })
 })
 
+app.get('/viewInvoice/:invoiceId', (req, res) => {
+
+    var invoiceId = req.params.invoiceId
+
+    sql = 'SELECT encryptedData FROM miningQueue WHERE invoiceId=?'
+    db.query(sql, [invoiceId], (err, results) => {
+        if (err) {
+            console.log(err)
+        }
+        // res.send(results[0].encryptedData)
+        res.render('pages/view_invoice.ejs', {invoice: results[0]})
+    })
+})
+
 // ====== [ error handling ] ======
 // add 404 & 500 page?
 
@@ -197,7 +211,7 @@ app.use(function(req, res, next) {
 
 
 // middleware
-var listener = app.listen(8080, function() {
+var listener = app.listen(3000, function() {
     console.log('\x1b[36m%s\x1b[0m', 'View at http://localhost:' + listener.address().port + "/login");
 });
 
