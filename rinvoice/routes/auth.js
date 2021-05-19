@@ -8,7 +8,7 @@ exports.register = function (req, res) {
         var email = post.email
         var password = post.password;
         var acctype = post.acctype;
-        console.log(acctype);
+        // console.log(acctype);
         var sql = "INSERT INTO users (id, name, email, password, acctype) VALUES (?)";
         var query = db.query(sql, [[id, name, email, password, acctype]], function (err, rows, fields, results) {
             if (err) {
@@ -47,8 +47,8 @@ exports.login = function (req, res) {
                 req.session.userId = results[0].id;
                 req.session.user = results[0];
                 req.session.email = results[0].email;
-                console.log(results[0].id);
-                res.redirect('/home/dashboard');
+                // console.log(results[0].id);
+                res.redirect('/home/invoices');
             }
             else {
                 message = 'Incorrect email or password.';
