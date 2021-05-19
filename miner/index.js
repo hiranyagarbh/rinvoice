@@ -22,9 +22,10 @@ http.get(listner, (resp) => {
         console.log(data)
 
         previousHash = data[0].previousHash
+        encryptedData = data[0].encryptedData
 
         // generates the IPFS hash from the data sent by the API and send it back
-        var IPFSHash = crypto.createHash('sha256').update(data[0].encryptedData).digest("hex")
+        var IPFSHash = crypto.createHash('sha256').update(encryptedData).digest("hex")
 
 
         data = {
@@ -32,7 +33,8 @@ http.get(listner, (resp) => {
             password: 'miner1',
             invoiceId: data[0].invoiceId,
             IPFSHash: IPFSHash,
-            previousHash: previousHash
+            previousHash: previousHash,
+            encryptedData: encryptedData
         }
 
         fs.appendFileSync(data.id + 'csv', previousHash + ',' + IPFSHash + '\n');
