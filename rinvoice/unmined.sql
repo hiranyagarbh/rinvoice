@@ -10,6 +10,7 @@ INSERT INTO blockchain(IPFSHash) VALUES(NULL);
 
 alter table invoices modify invoiceId varchar(64);
 
+/*
 SELECT * FROM (
     SELECT *
     FROM miningQueue
@@ -22,4 +23,4 @@ SELECT * FROM (
     FROM blockchain
     LIMIT 1
 ) blk;
-
+*/
