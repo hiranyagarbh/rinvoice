@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kbpgp try</title>
+    <script src="/javascripts/components/init/kbpgp-2.1.0-min.js"></script>
+
+</head>
+
+<body>
+    Please select a file and then hit Evaluate:
+
+    <br/>
+    <br/>
+    <input id="file" type="file" />
+    <br/>
+    <br/>
+    <button id="button">Send Invoice</button>
+
+    <script>
+        function b64ToPDF(b64) {
+
+            // Embed the PDF into the HTML page and show it to the user
+            var obj = document.createElement('object')
+            obj.style.width = '100%'
+            obj.style.height = '842pt'
+            obj.type = 'application/pdf'
+            obj.data = 'data:application/pdfbase64,' + b64
+            document.body.appendChild(obj)
+
+            // Insert a link that allows the user to download the PDF file
+            var link = document.createElement('a')
+            link.innerHTML = 'Download PDF file'
+            link.download = 'file.pdf'
+            link.href = 'data:application/octet-streambase64,' + b64
+            document.body.appendChild(link)
+        }
+
+        // assign the public key here
+        var buyer_pgp_public_key = `-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+I7NvxZ6M76frO9QCV+Mg48M=
+=0zTp
+-----END PGP PUBLIC KEY BLOCK-----`
+
+        // assign the private key here
+        var buyer_pgp_private_key = `-----BEGIN PGP PRIVATE KEY BLOCK-----
+
+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
+=vKg4
+-----END PGP PRIVATE KEY BLOCK-----`
+
+        // assign the private password here
+        var buyer_passphrase = 'password'
+
+        /**
+         * @param buyer_pgp_public_key public key of the buyer
+         * @param buyer_passph
+         */
+        function encryptDocument(buyer_pgp_public_key, message, callback) {
+
+            kbpgp.KeyManager.import_from_armored_pgp({
+                armored: buyer_pgp_public_key
+            }, function(err, buyer_key_manager) {
+                if (!err) {
+                    console.log("buyer key manager is loaded")
+                }
+
+                var params = {
+                    msg: message,
+                    encrypt_for: buyer_key_manager
+                }
+
+                kbpgp.box(params, callback)
+            })
+        }
+
+        function decryptDocument(buyer_pgp_private_key, buyer_passphrase, message) {
+            kbpgp.KeyManager.import_from_armored_pgp({
+                armored: buyer_pgp_private_key
+            }, function(err, buyer_key_manager) {
+                if (!err) {
+                    if (buyer_key_manager.is_pgp_locked()) {
+                        buyer_key_manager.unlock_pgp({
+                            passphrase: buyer_passphrase
+                        }, function(err) {
+                            if (!err) {
+                                console.log("Loaded private key with passphrase")
+                            }
+                        })
+                    } else {
+                        console.log("Loaded private key w/o passphrase")
+                    }
+                }
+
+                var ring = new kbpgp.keyring.KeyRing
+                ring.add_key_manager(buyer_key_manager)
+
+                kbpgp.unbox({
+                    keyfetch: ring,
+                    armored: message
+                }, function(err, literals) {
+                    if (err != null) {
+                        return console.log("Problem: " + err)
+                    } else {
+                        console.log("decrypted message")
+
+                        var decryptedMessage = literals[0].toString()
+                        console.log(decryptedMessage)
+                    }
+                })
+            })
+        }
+
+        function getBase64(file, callback) {
+            var reader = new FileReader()
+            reader.readAsDataURL(file)
+
+            reader.onload = () => {
+                callback(reader)
+            }
+
+            reader.onerror = function(error) {
+                console.log('Error: ', error)
+            }
+        }
+
+        document.getElementById('button').addEventListener('click', function() {
+            var files = document.getElementById('file').files
+            if (files.length > 0) {
+
+                getBase64(files[0], (reader) => {
+                    b64 = reader.result.split(',')[1]
+                    encryptDocument(buyer_pgp_public_key, b64,
+                        function(err, result_string, result_buffer) {
+                            // console.log(result_string)
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", '/home/upload_file/save_invoice_to_db', true);
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+                            xhr.send(JSON.stringify({
+                                encryptedMessage: 'hello'
+                            }));
+                        })
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>

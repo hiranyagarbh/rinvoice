@@ -113,14 +113,14 @@
 
                         <!-- action bts -->
                         <td>
-                          <form method="post">
+                          <form method="post" id="<%= invoice.invoiceId %>">
                           <% if (invoice.name!=null && invoice.amount!=null) { %> 
                           <% if (invoice.status == 'n') {%>
                             
-                              <button class="btn btn-icon btn-outline-info" title="View the invoice" type="submit" name="viewinv" formaction="#" formtarget="_blank">
+                              <a class="btn btn-icon btn-outline-info" href="<%= '/viewInvoice/' + invoice.invoiceId %>" title="View the invoice" type="submit" name="viewinv" target="_blank">
                                 <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
                                 <span class="btn-inner--text">View</span>
-                              </button>
+                              </a>
   
                             <% if (data[0].acctype=='b' ) { %>
                               <button class="btn btn-icon btn-outline-success" title="Approve the invoice" type="submit" name="apprinv" value="<%=invoice.invoiceId%>" formaction="/home/invoices/approve">
@@ -143,10 +143,10 @@
                           <%} else { %>
 
                             <!-- after the invoice has been approvde/rejected -->
-                            <button class="btn btn-icon btn-outline-info" title="View the invoice" type="submit" name="viewinv" formaction="#" formtarget="_blank">
+                            <a class="btn btn-icon btn-outline-info" title="View the invoice" href="<%= '/viewInvoice/' + invoice.invoiceId %>" name="viewinv">
                               <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
                               <span class="btn-inner--text">View</span>
-                            </button>
+                            </a>
                           
                           <%}}%> <!-- null check & status check -->
                           </form>

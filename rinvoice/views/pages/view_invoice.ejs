@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/html_head', {title: 'View Invoice' }); %>
+    
+</head>
+
+<body>
+    Enter Private Key <br>
+    <textarea id="privateKey" class="form-control" placeholder="Private Key" required></textarea>
+    <input type="text" id="passphrase" placeholder="passphrase" required>
+    <br><button id="decryptInvoice" onclick="decrypt()">decrypt invoice</button>
+    <br><br>
+    <!-- Hidden from the user, only used to store the encrypted invoice for the js function -->
+    <p id="encryptedInvoice" style="visibility: hidden; display:none;"><%= invoice.encryptedData %></p>
+
+    <script src="/javascripts/components/init/kbpgp-2.1.0-min.js"></script>
+    <script>
+
+        
+
+        function decryptDocument(buyer_pgp_private_key, buyer_passphrase, message) {
+            kbpgp.KeyManager.import_from_armored_pgp({
+                armored: buyer_pgp_private_key
+            }, function(err, buyer_key_manager) {
+                if (!err) {
+                    if (buyer_key_manager.is_pgp_locked()) {
+                        buyer_key_manager.unlock_pgp({
+                            passphrase: buyer_passphrase
+                        }, function(err) {
+                            if (!err) {
+                                console.log("Loaded private key with passphrase")
+                            }
+                        })
+                    } else {
+                        console.log("Loaded private key w/o passphrase")
+                    }
+                }
+
+                var ring = new kbpgp.keyring.KeyRing
+                ring.add_key_manager(buyer_key_manager)
+
+                kbpgp.unbox({
+                    keyfetch: ring,
+                    armored: message
+                }, function(err, literals) {
+                    if (err != null) {
+                        return console.log("Problem: " + err)
+                    } else {
+                        console.log("decrypted message")
+
+                        var decryptedMessage = literals[0].toString()
+                        console.log(decryptedMessage)
+                        
+                        var obj = document.createElement('object');
+                        obj.style.width = '100%';
+                        obj.style.height = '842pt';
+                        obj.type = 'application/pdf';
+                        obj.data = 'data:application/pdf;base64,' + decryptedMessage;
+                        document.body.appendChild(obj);
+                    }
+                })
+            })
+        }
+
+        function decrypt(){
+            buyer_pgp_private_key = document.getElementById('privateKey').value
+            buyer_passphrase = document.getElementById('passphrase').value
+            message = document.getElementById('encryptedInvoice').innerHTML
+
+            decryptDocument(buyer_pgp_private_key, buyer_passphrase, message)
+        }
+    </script>
+</body>
