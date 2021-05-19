@@ -3,7 +3,10 @@ const crypto = require('crypto');
 const fs = require('fs');
 const axios = require('axios');
 
-http.get('http://localhost:3000/mineBlocks', (resp) => {
+// change the port below to suit your localhost
+var listner = "http://localhost:8080/mineBlocks";
+
+http.get(listner, (resp) => {
     let data = '';
 
     // A chunk of data has been received.
@@ -35,7 +38,7 @@ http.get('http://localhost:3000/mineBlocks', (resp) => {
         fs.appendFileSync(data.id + 'csv', previousHash + ',' + IPFSHash + '\n');
 
         axios
-            .post('http://localhost:3000/mineBlocks', data)
+            .post(listner, data)
             .then(res => {
                 console.log(`statusCode: ${res.statusCode}`)
                 console.log(res)
