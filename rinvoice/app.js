@@ -238,7 +238,7 @@ app.post('/mineBlocks', (req, res) => {
                     })
                     console.log(err.message)
                 } else {
-                    db.query("DELETE FROM miningQueue WHERE invoiceId = ?", [req.body.invoiceId],
+                    db.query("UPDATE miningQueue SET status='m' WHERE invoiceId = ?", [req.body.invoiceId],
                         (err) => {
                             if (err){
                                 db.rollback(()=>{
