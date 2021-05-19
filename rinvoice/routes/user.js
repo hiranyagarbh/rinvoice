@@ -12,7 +12,7 @@ exports.dashboard = function (req, res, next) {
 
     var sql = "SELECT * FROM users WHERE id = ? AND email = ?";
     db.query(sql, [userId, email], function (err, results) {
-        res.render('pages/home/dashboard.ejs', { data: results });
+        res.render('pages/home/invoices', { data: results });
     });
 };
 
