@@ -8952,6 +8952,10 @@ button.bg-darker:focus
 .border-thick {
     border: 5px solid #e9ecef !important;
 }
+.border-thick-red {
+    border: 4px dashed rgba(220,20,60,0.6) !important;
+    border-radius: 2px;
+}
 
 .border-top
 {

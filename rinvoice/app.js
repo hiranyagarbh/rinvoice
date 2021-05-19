@@ -50,8 +50,8 @@ var upload_file = require('./routes/upload_file')
 // ====== [ db conn ] ======
 var conn = mysql.createConnection({
     host: 'localhost',
-    user: 'john',
-    password: 'john123',
+    user: 'root',
+    password: 'root123',
     database: 'rinvoice'
 });
 
@@ -192,7 +192,13 @@ app.get('/viewInvoice/:invoiceId', (req, res) => {
 
     var invoiceId = req.params.invoiceId
 
-    sql = 'SELECT encryptedData FROM miningQueue WHERE invoiceId=?'
+    if(invoiceId.length == 64){
+        sql = 'SELECT encryptedData from IPFS WHERE Hash=?'
+    } else {
+        sql = 'SELECT encryptedData FROM miningQueue WHERE invoiceId=?'
+    }
+
+    
     db.query(sql, [invoiceId], (err, results) => {
         if (err) {
             console.log(err)
@@ -233,39 +239,49 @@ app.post('/mineBlocks', (req, res) => {
         db.query('INSERT INTO blockchain(IPFSHash) VALUES(?)', [req.body.IPFSHash],
             (err) => {
                 if (err) {
-                    db.rollback(()=>{
+                    db.rollback(() => {
                         throw err
                     })
                     console.log(err.message)
                 } else {
-                    db.query("DELETE FROM miningQueue WHERE invoiceId = ?", [req.body.invoiceId],
+                    db.query("UPDATE miningQueue SET status='m' WHERE invoiceId = ?", [req.body.invoiceId],
                         (err) => {
-                            if (err){
-                                db.rollback(()=>{
+                            if (err) {
+                                db.rollback(() => {
                                     throw err
                                 })
                                 console.log("failed to delete from miningQueue. Error: " + err.message)
-                            }else {
+                            } else {
                                 console.log('added node to blockchain and removed from mining queue successfully')
                                 db.query('UPDATE invoices SET invoiceId = ? WHERE invoiceId = ?', [req.body.IPFSHash, req.body.invoiceId],
                                     (err) => {
                                         if (err) {
-                                            db.rollback(()=>{
+                                            db.rollback(() => {
                                                 throw err
                                             })
                                             console.log("could not update IPFS hash in invoices table")
                                         }
-                                        db.commit((err)=>{
-                                            if(err){
-                                                console.log(err);
-                                                db.rollback(()=>{
-                                                    throw err
+
+                                        db.query('INSERT INTO IPFS(Hash, encryptedData) VALUES(?,?)', [req.body.IPFSHash, req.body.encryptedData],
+                                            (err) => {
+                                                if (err) {
+                                                    db.rollback(() => {
+                                                        throw err
+                                                    })
+                                                }
+                                                // else 
+                                                db.commit((err) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                        db.rollback(() => {
+                                                            throw err
+                                                        })
+                                                    } else {
+                                                        console.log("Block has been commited to the blockchain");
+                                                    }
                                                 })
-                                            } else {
-                                                console.log("Block has been commited to the blockchain");
-                                            }
-                                        })
-                                    })
+                                            })
+                                })
                             }
                         })
 
@@ -285,7 +301,7 @@ app.use(function(req, res, next) {
 
 
 // middleware
-var listener = app.listen(3000, function() {
+var listener = app.listen(8080, function() {
     console.log('\x1b[36m%s\x1b[0m', 'View at http://localhost:' + listener.address().port + "/login");
 });
 

@@ -64,3 +64,9 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2021-03-11 17:31:37
+
+-- New commands
+CREATE TABLE IPFS(
+    Hash VARCHAR(64) PRIMARY KEY,
+    encryptedData MEDIUMTEXT
+);

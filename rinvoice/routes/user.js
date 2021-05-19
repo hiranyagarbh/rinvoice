@@ -9,10 +9,10 @@ exports.dashboard = function (req, res, next) {
         res.redirect("/login");
         return;
     }
-
+    // temporarily removed dashboard and redirected to invoice tab
     var sql = "SELECT * FROM users WHERE id = ? AND email = ?";
     db.query(sql, [userId, email], function (err, results) {
-        res.render('pages/home/dashboard.ejs', { data: results });
+        res.render('pages/home/invoices', { data: results });
     });
 };
 

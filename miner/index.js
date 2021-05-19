@@ -3,7 +3,10 @@ const crypto = require('crypto');
 const fs = require('fs');
 const axios = require('axios');
 
-http.get('http://localhost:3000/mineBlocks', (resp) => {
+// change the port below to suit your localhost
+var listner = "http://localhost:8080/mineBlocks";
+
+http.get(listner, (resp) => {
     let data = '';
 
     // A chunk of data has been received.
@@ -19,9 +22,10 @@ http.get('http://localhost:3000/mineBlocks', (resp) => {
         console.log(data)
 
         previousHash = data[0].previousHash
+        encryptedData = data[0].encryptedData
 
         // generates the IPFS hash from the data sent by the API and send it back
-        var IPFSHash = crypto.createHash('sha256').update(data[0].encryptedData).digest("hex")
+        var IPFSHash = crypto.createHash('sha256').update(encryptedData).digest("hex")
 
 
         data = {
@@ -29,13 +33,14 @@ http.get('http://localhost:3000/mineBlocks', (resp) => {
             password: 'miner1',
             invoiceId: data[0].invoiceId,
             IPFSHash: IPFSHash,
-            previousHash: previousHash
+            previousHash: previousHash,
+            encryptedData: encryptedData
         }
 
         fs.appendFileSync(data.id + 'csv', previousHash + ',' + IPFSHash + '\n');
 
         axios
-            .post('http://localhost:3000/mineBlocks', data)
+            .post(listner, data)
             .then(res => {
                 console.log(`statusCode: ${res.statusCode}`)
                 console.log(res)

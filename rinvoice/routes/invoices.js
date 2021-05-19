@@ -19,7 +19,7 @@ exports.invoices = function(req, res, next) {
                 var get_data = 'SELECT name, acctype, service, amount, buyeremail, invoiceId, filepath, urgent, status FROM users LEFT JOIN invoices ON users.id = invoices.m_uid WHERE id = ? ORDER BY dateadded desc;';
                 db.query(get_data, [userId], function(err, results) {
                     // add error handler here
-                    console.log(results);
+                    // console.log(results);
                     res.render('pages/home/invoices.ejs', { data: results });
                 });
 
