@@ -250,7 +250,14 @@ blFEk8WDT7McntsdpvqnXkKGI7NvxZ6M76frO9QCV+Mg48M=
                     b64 = reader.result.split(',')[1]
                     encryptDocument(buyer_pgp_public_key, b64,
                         function(err, result_string, result_buffer) {
-                            console.log(result_string)
+                            // console.log(result_string)
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", '/home/upload_file/save_invoice_to_db', true);
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+                            xhr.send(JSON.stringify({
+                                encryptedMessage: 'hello'
+                            }));
                         })
                 })
             }

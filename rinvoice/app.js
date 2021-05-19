@@ -171,21 +171,25 @@ app.post('/home/upload_file/save_invoice_to_db', (req, res) => {
         invoice_data.urgent,
         "n"
     ], function(err, results) {
-        if (err) { console.log(err.message); }
+        if (err) {
+            console.log(err.message);
+        } else {
+            var sql = 'INSERT INTO miningQueue(invoiceId, encryptedData) VALUES (?,?);'
+            db.query(sql, [
+                invoice_data.unminedInvoiceId,
+                invoice_data.encryptedMessage
+            ], (err, result) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log('added to mining queue')
+                }
+            })
+        }
         res.redirect('/home/invoices');
     });
 
-    var sql = 'INSERT INTO miningQueue VALUES (?,?);'
-    db.query(sql, [
-        invoice_data.unminedInvoiceId,
-        invoice_data.encryptedMessage
-    ], (err, result) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log('added to mining queue')
-        }
-    })
+
 })
 
 app.get('/viewInvoice/:invoiceId', (req, res) => {
@@ -198,8 +202,93 @@ app.get('/viewInvoice/:invoiceId', (req, res) => {
             console.log(err)
         }
         // res.send(results[0].encryptedData)
-        res.render('pages/view_invoice.ejs', {invoice: results[0]})
+        res.render('pages/view_invoice.ejs', { invoice: results[0] })
     })
+})
+
+app.get('/mineBlocks', (req, res) => {
+    // add the code for mining here
+    var sql = `
+    SELECT * FROM (
+        SELECT *
+        FROM miningQueue
+        WHERE status = 'a' 
+        AND confirmations < 1
+        LIMIT 1
+    ) invoice,
+    (
+        SELECT IPFSHash as previousHash
+        FROM blockchain
+        ORDER BY sno DESC
+        LIMIT 1
+    ) blk;`
+    db.query(sql, (err, result) => {
+        if (err)
+            console.log(err)
+        res.json(result)
+    })
+})
+
+function deleteFromMiningQueue(invoiceId) {
+    db.query("DELETE FROM miningQueue WHERE invoiceId = ?", [req.body.invoiceId],
+        (err) => {
+            if (err)
+                console.log("failed to delete from miningQueue. Error: " + err.message)
+            else {
+                console.log('added node to blockchain and removed from mining queue successfully')
+            }
+        })
+}
+
+app.post('/mineBlocks', (req, res) => {
+    console.log(req.body);
+
+    db.beginTransaction((err) => {
+        if (err) throw err;
+        db.query('INSERT INTO blockchain(IPFSHash) VALUES(?)', [req.body.IPFSHash],
+            (err) => {
+                if (err) {
+                    db.rollback(()=>{
+                        throw err
+                    })
+                    console.log(err.message)
+                } else {
+                    db.query("DELETE FROM miningQueue WHERE invoiceId = ?", [req.body.invoiceId],
+                        (err) => {
+                            if (err){
+                                db.rollback(()=>{
+                                    throw err
+                                })
+                                console.log("failed to delete from miningQueue. Error: " + err.message)
+                            }else {
+                                console.log('added node to blockchain and removed from mining queue successfully')
+                                db.query('UPDATE invoices SET invoiceId = ? WHERE invoiceId = ?', [req.body.IPFSHash, req.body.invoiceId],
+                                    (err) => {
+                                        if (err) {
+                                            db.rollback(()=>{
+                                                throw err
+                                            })
+                                            console.log("could not update IPFS hash in invoices table")
+                                        }
+                                        db.commit((err)=>{
+                                            if(err){
+                                                console.log(err);
+                                                db.rollback(()=>{
+                                                    throw err
+                                                })
+                                            } else {
+                                                console.log("Block has been commited to the blockchain");
+                                            }
+                                        })
+                                    })
+                            }
+                        })
+
+                }
+            })
+    })
+
+    res.end();
 })
 
 // ====== [ error handling ] ======
