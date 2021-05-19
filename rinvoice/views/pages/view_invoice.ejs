@@ -3,17 +3,38 @@
 
 <head>
     <%- include('../partials/html_head', {title: 'View Invoice' }); %>
-    
 </head>
 
 <body>
-    Enter Private Key <br>
-    <textarea id="privateKey" class="form-control" placeholder="Private Key" required></textarea>
-    <input type="text" id="passphrase" placeholder="passphrase" required>
-    <br><button id="decryptInvoice" onclick="decrypt()">decrypt invoice</button>
-    <br><br>
-    <!-- Hidden from the user, only used to store the encrypted invoice for the js function -->
-    <p id="encryptedInvoice" style="visibility: hidden; display:none;"><%= invoice.encryptedData %></p>
+
+    <div class="row">
+      <div class="col-6 mx-auto mt-4 card-body border-thick-red" style="padding: 50px 0;">
+        <div class="col-8 mx-auto text-center">
+
+          <div class="row">
+            <label class="form-control-label">Enter your Private Key:</label>
+            <textarea id="privateKey" class="form-control" placeholder="Private Key" required></textarea>
+          </div>
+
+          <div class="row my-3">
+            <div class="col-8 mx-auto">
+              <input class="form-control" type="password" id="passphrase" placeholder="Enter your passphrase" required>
+            </div>
+          </div>
+          
+          <button class="btn btn-default" id="decryptInvoice" onclick="decrypt()">Decrypt Invoice</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <!-- Hidden from the user, only used to store the encrypted invoice for the js function -->
+        <p id="encryptedInvoice" style="visibility: hidden; display:none;"><%= invoice.encryptedData %></p>
+      </div>
+    </div>
+
+    
 
     <script src="/javascripts/components/init/kbpgp-2.1.0-min.js"></script>
     <script>
