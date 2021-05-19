@@ -33,7 +33,7 @@ exports.profile = function (req, res, next) {
         var sql = "SELECT * FROM users WHERE id = ?";
         db.query(sql, [userId], function (err, results) {
             res.render('pages/home/profile.ejs', { data: results, p_message: message, p_flag : p_flag });
-            console.log(results); //remove in production
+            // console.log(results); //remove in production
         });
     }
 
