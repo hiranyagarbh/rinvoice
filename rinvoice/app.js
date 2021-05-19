@@ -1,8 +1,6 @@
-var createError = require('http-errors');
 var cookieParser = require('cookie-parser');
 var express = require('express');
 var path = require('path');
-var http = require('http');
 
 // ====== [ dev ] ======
 var logger = require('morgan');
@@ -188,8 +186,6 @@ app.post('/home/upload_file/save_invoice_to_db', (req, res) => {
         }
         res.redirect('/home/invoices');
     });
-
-
 })
 
 app.get('/viewInvoice/:invoiceId', (req, res) => {
@@ -228,17 +224,6 @@ app.get('/mineBlocks', (req, res) => {
         res.json(result)
     })
 })
-
-function deleteFromMiningQueue(invoiceId) {
-    db.query("DELETE FROM miningQueue WHERE invoiceId = ?", [req.body.invoiceId],
-        (err) => {
-            if (err)
-                console.log("failed to delete from miningQueue. Error: " + err.message)
-            else {
-                console.log('added node to blockchain and removed from mining queue successfully')
-            }
-        })
-}
 
 app.post('/mineBlocks', (req, res) => {
     console.log(req.body);
