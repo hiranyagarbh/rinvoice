@@ -4,7 +4,7 @@ const fs = require('fs');
 const axios = require('axios');
 
 // change the port below to suit your localhost
-var listner = "http://localhost:8080/mineBlocks";
+var listner = "http://localhost:3000/mineBlocks";
 
 http.get(listner, (resp) => {
     let data = '';

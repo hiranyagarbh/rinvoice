@@ -50,8 +50,8 @@ var upload_file = require('./routes/upload_file')
 // ====== [ db conn ] ======
 var conn = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'root123',
+    user: 'john',
+    password: 'john123',
     database: 'rinvoice'
 });
 
@@ -301,7 +301,7 @@ app.use(function(req, res, next) {
 
 
 // middleware
-var listener = app.listen(8080, function() {
+var listener = app.listen(3000, function() {
     console.log('\x1b[36m%s\x1b[0m', 'View at http://localhost:' + listener.address().port + "/login");
 });
 
